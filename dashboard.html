@@ -221,5 +221,223 @@
       </div>
     </main>
   </div>
+<!-- ═══ DEADRECKONER FLOATING AI CONSULTANT BUBBLE ═══ -->
+<style>
+  #drBubbleBtn {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: var(--gold, #C9A84C);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 24px rgba(201, 168, 76, 0.35);
+    z-index: 999;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  #drBubbleBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(201, 168, 76, 0.45);
+  }
+  #drBubbleBtn svg { width: 26px; height: 26px; color: #111; }
+
+  #drChatWindow {
+    position: fixed;
+    bottom: 98px;
+    right: 28px;
+    width: 380px;
+    max-height: 560px;
+    background: #111111;
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 20px;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 999;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+  }
+  #drChatWindow.open { display: flex; }
+
+  #drChatHeader {
+    padding: 16px 18px;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  #drChatHeader span {
+    color: var(--gold, #C9A84C);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  #drChatClose {
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 1.1rem;
+    cursor: pointer;
+    line-height: 1;
+  }
+  #drChatClose:hover { color: #fff; }
+
+  #drChatMessages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 240px;
+    max-height: 360px;
+  }
+  .dr-msg { display: flex; }
+  .dr-msg.ai { justify-content: flex-start; }
+  .dr-msg.user { justify-content: flex-end; }
+  .dr-bubble {
+    max-width: 82%;
+    padding: 10px 14px;
+    border-radius: 14px;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: #F5F5F5;
+  }
+  .dr-msg.ai .dr-bubble { background: #1a1a1a; border: 1px solid rgba(255,255,255,.05); }
+  .dr-msg.user .dr-bubble { background: rgba(201,168,76,.14); border: 1px solid rgba(201,168,76,.3); }
+
+  #drChatInputRow {
+    display: flex;
+    gap: 8px;
+    padding: 14px;
+    border-top: 1px solid rgba(255,255,255,.06);
+  }
+  #drChatInput {
+    flex: 1;
+    height: 40px;
+    background: #151515;
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 10px;
+    color: #F5F5F5;
+    padding: 0 12px;
+    outline: none;
+    font-size: 0.85rem;
+    font-family: inherit;
+  }
+  #drChatInput:focus { border-color: rgba(201,168,76,.4); }
+  #drChatSend {
+    height: 40px;
+    padding: 0 16px;
+    border: none;
+    border-radius: 10px;
+    background: var(--gold, #C9A84C);
+    color: #111;
+    font-weight: 700;
+    font-size: 0.82rem;
+    cursor: pointer;
+  }
+  #drChatSend:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  @media (max-width: 600px) {
+    #drChatWindow { width: calc(100vw - 32px); right: 16px; bottom: 88px; }
+    #drBubbleBtn { right: 16px; bottom: 16px; }
+  }
+</style>
+
+<button id="drBubbleBtn" type="button" aria-label="Open AI Consultant">
+  <svg viewBox="0 0 24 24" fill="none"><path d="M12 4v3M12 17v3M4 12h3M17 12h3M6.4 6.4l2.1 2.1M15.5 15.5l2.1 2.1M17.6 6.4l-2.1 2.1M8.5 15.5l-2.1 2.1" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="12" cy="12" r="3.5" stroke="currentColor" stroke-width="1.7"/></svg>
+</button>
+
+<div id="drChatWindow">
+  <div id="drChatHeader">
+    <span>AI Consultant</span>
+    <button id="drChatClose" type="button" aria-label="Close">×</button>
+  </div>
+  <div id="drChatMessages">
+    <div class="dr-msg ai"><div class="dr-bubble">Hi, I'm your brand consultant. Ask me how to use an asset, or upload an image to check it against our standards.</div></div>
+  </div>
+  <div id="drChatInputRow">
+    <input id="drChatInput" type="text" placeholder="Ask anything..." autocomplete="off">
+    <button id="drChatSend" type="button">Send</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  const SUPABASE_FUNCTION_URL = "https://ksvxslxwrfembxhmavqw.supabase.co/functions/v1/ai-consultant";
+  const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_RomL2BWgUhpweBERLtSJ6A_c2ev74Wu";
+
+  const bubbleBtn = document.getElementById("drBubbleBtn");
+  const chatWindow = document.getElementById("drChatWindow");
+  const closeBtn = document.getElementById("drChatClose");
+  const messages = document.getElementById("drChatMessages");
+  const input = document.getElementById("drChatInput");
+  const sendBtn = document.getElementById("drChatSend");
+
+  bubbleBtn.addEventListener("click", () => chatWindow.classList.toggle("open"));
+  closeBtn.addEventListener("click", () => chatWindow.classList.remove("open"));
+
+  function appendMessage(role, text) {
+    const wrapper = document.createElement("div");
+    wrapper.className = `dr-msg ${role}`;
+    wrapper.innerHTML = `<div class="dr-bubble">${text.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</div>`;
+    messages.appendChild(wrapper);
+    messages.scrollTop = messages.scrollHeight;
+    return wrapper;
+  }
+
+  async function sendMessage() {
+    const text = input.value.trim();
+    if (!text) return;
+
+    appendMessage("user", text);
+    input.value = "";
+    sendBtn.disabled = true;
+
+    const typing = appendMessage("ai", "Thinking…");
+
+    try {
+      const response = await fetch(SUPABASE_FUNCTION_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${SUPABASE_PUBLISHABLE_KEY}`,
+          "apikey": SUPABASE_PUBLISHABLE_KEY,
+        },
+        body: JSON.stringify({ message: text }),
+      });
+      const data = await response.json();
+      typing.remove();
+
+      if (data.error) {
+        appendMessage("ai", "Sorry, something went wrong. Please try again.");
+      } else {
+        appendMessage("ai", data.reply || "I didn't get a response — please try again.");
+      }
+    } catch (err) {
+      typing.remove();
+      appendMessage("ai", "Couldn't reach the consultant service. Please try again.");
+      console.error("Floating bubble fetch error:", err);
+    } finally {
+      sendBtn.disabled = false;
+    }
+  }
+
+  sendBtn.addEventListener("click", sendMessage);
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+})();
+</script>
+<!-- ═══ END FLOATING BUBBLE ═══ -->
+
 </body>
 </html>
