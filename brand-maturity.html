@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deadreckoner — Brand Maturity</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0a;--sidebar:#0d0d0d;--surface:#111111;--surface2:#171717;--gold:#C9A84C;--gold-soft:rgba(201,168,76,.12);--white:#F5F5F5;--text:#888888;--border:rgba(255,255,255,.06);--radius:18px;--transition:.22s ease;--sidebar-width:220px;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{background:var(--bg);}
+body{background:radial-gradient(circle at top right,rgba(201,168,76,.07),transparent 35rem),var(--bg);color:var(--white);font-family:Inter,sans-serif;-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:inherit;}
+.app{display:flex;min-height:100vh;}
+.sidebar{position:fixed;left:0;top:0;width:var(--sidebar-width);height:100vh;background:var(--sidebar);border-right:1px solid var(--border);padding:28px 18px;display:flex;flex-direction:column;}
+.brand{color:var(--gold);font-size:.75rem;font-weight:800;letter-spacing:4px;margin-bottom:38px;display:block;}
+.nav{display:flex;flex-direction:column;gap:5px;}
+.nav a{position:relative;display:flex;align-items:center;gap:12px;height:44px;padding:0 14px;color:var(--text);border-radius:12px;transition:var(--transition);font-size:.9rem;font-weight:500;}
+.nav a svg{width:17px;height:17px;flex-shrink:0;}
+.nav a::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:2px;background:transparent;border-radius:2px;}
+.nav a:hover{color:var(--white);background:rgba(255,255,255,.03);}
+.nav a.active{color:var(--white);background:var(--gold-soft);}
+.nav a.active::before{background:var(--gold);}
+.profile{margin-top:auto;display:flex;align-items:center;gap:12px;padding:14px;border:1px solid var(--border);border-radius:16px;}
+.avatar{width:38px;height:38px;border-radius:50%;background:rgba(201,168,76,.14);border:1px solid rgba(201,168,76,.35);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:.75rem;font-weight:700;}
+.profile h4{font-size:.86rem;}
+.profile span{display:block;color:var(--text);font-size:.74rem;margin-top:2px;}
+main{margin-left:var(--sidebar-width);width:100%;padding:44px;}
+.container{max-width:1280px;margin:auto;}
+.page-title{font-size:3.5rem;font-weight:500;letter-spacing:-0.055em;line-height:.95;}
+.subtitle{margin-top:14px;color:var(--text);max-width:760px;line-height:1.7;}
+.overall{margin-top:38px;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:32px;}
+.percent{font-size:4.5rem;font-weight:600;color:var(--white);letter-spacing:-.05em;}
+.progress{margin-top:18px;height:10px;background:#1b1b1b;border-radius:999px;overflow:hidden;}
+.progress span{display:block;width:34%;height:100%;background:var(--gold);}
+.progress-label{margin-top:14px;color:var(--text);font-size:.92rem;}
+.grid{margin-top:34px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:22px;transition:var(--transition);}
+.card:hover{transform:translateY(-2px);border-color:rgba(201,168,76,.35);}
+.card h3{font-size:1rem;font-weight:600;line-height:1.4;}
+.card p{margin-top:8px;color:var(--text);font-size:.85rem;}
+.slots{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;}
+.slot{width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;}
+.slot.complete{background:var(--gold);color:#111;}
+.slot.missing{border:1px dashed rgba(255,255,255,.18);color:rgba(255,255,255,.28);background:transparent;}
+@media(max-width:1100px){.grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:900px){.app{display:block;}.sidebar{position:relative;width:100%;height:auto;}main{margin-left:0;padding:24px;}.page-title{font-size:2.6rem;}.grid{grid-template-columns:1fr;}.percent{font-size:3.4rem;}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+<a href="index.html" class="brand">DEADRECKONER</a>
+<nav class="nav">
+<a href="dashboard.html"><svg viewBox="0 0 24 24" fill="none"><path d="M4 13h7V4H4v9zM13 20h7V4h-7v16zM4 20h7v-5H4v5z" stroke="currentColor" stroke-width="1.7"/></svg>Command Center</a>
+<a href="assets.html"><svg viewBox="0 0 24 24" fill="none"><path d="M4 7.5h7l2 2H20v9H4v-11z" stroke="currentColor" stroke-width="1.7"/></svg>Assets</a>
+<a href="approvals.html"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.2 4.2L19 6.8" stroke="currentColor" stroke-width="1.8"/></svg>Approvals</a>
+<a href="requests.html"><svg viewBox="0 0 24 24" fill="none"><path d="M6 5h12v14H6z" stroke="currentColor" stroke-width="1.7"/></svg>Requests</a>
+<a href="brand-maturity.html" class="active"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5L4.8 8.3l5-.7L12 3z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>Brand Maturity</a>
+<a href="ai-consultant.html"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3.5" stroke="currentColor" stroke-width="1.7"/><path d="M12 4v3M12 17v3M4 12h3M17 12h3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>AI Consultant</a>
+<a href="settings.html"><svg viewBox="0 0 24 24" fill="none"><path d="M12 8a4 4 0 100 8 4 4 0 000-8z" stroke="currentColor" stroke-width="1.7"/></svg>Settings</a>
+</nav>
+<div class="profile">
+<div class="avatar">AM</div>
+<div><h4>Avery Morgan</h4><span>Brand Keeper</span></div>
+</div>
+</aside>
+<main>
+<div class="container">
+<h1 class="page-title">Brand Maturity</h1>
+<p class="subtitle">Track what's approved, and what's still missing from your brand book.</p>
+<section class="overall">
+<div class="percent">34%</div>
+<div class="progress"><span></span></div>
+<div class="progress-label">17 of 53 brand assets defined</div>
+</section>
+<section class="grid">
+<div class="card"><h3>Logo &amp; Identity Marks</h3><p>3 of 7 complete</p><div class="slots"><div class="slot complete">✓</div><div class="slot complete">✓</div><div class="slot complete">✓</div><div class="slot missing">+</div><div class="slot missing">+</div><div class="slot missing">+</div><div class="slot missing">+</div></div></div>
+<div class="card"><h3>Color Palette</h3><p>2 of 4 complete</p><div class="slots"><div class="slot complete">✓</div><div class="slot complete">✓</div><div class="slot missing">+</div><div class="slot missing">+</div></div></div>
+<div class="card"><h3>Typography</h3><p>1 of 4 complete</p><div class="slots"><div class="slot complete">✓</div><div class="slot missing">+</div><div class="slot missing">+</div><div class="slot missing">+</div></div></div>
+<div class="card"><h3>Photography &amp; Imagery Style</h3><p>2 of 4 complete</p><div class="slots"><div class="slot complete">✓</div><div class="slot complete">✓</div><div class="slot missing">+</div><div class="slot missing">+</div></div></div>
+<div class="card"><h3>Web &amp; UI Assets</h3><p>1 of 11 complete</p><div class="slots"><div class="slot complete">✓</div><div class="slot missing">+</div><div class="slot missing">+</div><div class="slot missing">+</div><div class="slot missing">+</div><div class="slot missing">+</div><div class="slot missing">+</div><div class="slot missing">+</div><div class="slot missing">+</div><div class="slot missing">+</div><div class="slot missing">+</div></div></div>
+<div class="card"><h3>Email</h3><p>1 of 3 complete</p><div class="slots"><div class="slot complete">✓</div><div class="slot missing">+</div><div class="slot missing">+</div></div></div>
+<div class="card"><h3>Print &amp; Physical Collateral</h3><p>0 of 8 complete</p><div class="slots"><div class="slot missing">+</div><div class="slot missing">+</div><div class="slot missing">+</div><div class="slot missing">+</div><div class="slot missing">+</div><div class="slot missing">+</div><div class="slot missing">+</div><div class="slot missing">+</div></div></div>
+<div class="card"><h3>Marketing &amp; Sales Materials</h3><p>0 of 4 complete</p><div class="slots"><div class="slot missing">+</div><div class="slot missing">+</div><div class="slot missing">+</div><div class="slot missing">+</div></div></div>
+<div class="card"><h3>Video &amp; Motion</h3><p>0 of 3 complete</p><div class="slots"><div class="slot missing">+</div><div class="slot missing">+</div><div class="slot missing">+</div></div></div>
+<div class="card"><h3>Voice &amp; Messaging</h3><p>0 of 3 complete</p><div class="slots"><div class="slot missing">+</div><div class="slot missing">+</div><div class="slot missing">+</div></div></div>
+<div class="card"><h3>Legal &amp; Compliance</h3><p>0 of 2 complete</p><div class="slots"><div class="slot missing">+</div><div class="slot missing">+</div></div></div>
+</section>
+</div>
+</main>
+</div>
+</body>
+</html>
