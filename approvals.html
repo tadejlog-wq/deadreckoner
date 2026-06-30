@@ -160,10 +160,10 @@
           </svg>
         </header>
         <section class="stats-grid" aria-label="Approval statistics">
-          <article class="card stat-card"><div class="stat-title">Pending Review</div><div class="stat-value">12</div><div class="stat-label">Requires your attention</div><div class="stat-progress" aria-hidden="true"><span style="width: 72%;"></span></div></article>
-          <article class="card stat-card"><div class="stat-title">In Progress</div><div class="stat-value">8</div><div class="stat-label">Awaiting others</div><div class="stat-progress" aria-hidden="true"><span style="width: 52%;"></span></div></article>
-          <article class="card stat-card"><div class="stat-title">Approved</div><div class="stat-value">156</div><div class="stat-label">This month</div><div class="stat-progress" aria-hidden="true"><span style="width: 88%;"></span></div></article>
-          <article class="card stat-card"><div class="stat-title">Rejected</div><div class="stat-value">3</div><div class="stat-label">This month</div><div class="stat-progress" aria-hidden="true"><span style="width: 18%;"></span></div></article>
+          <article class="card stat-card"><div class="stat-title">Pending Review</div><div class="stat-value" id="stat-pending">—</div><div class="stat-label">Requires your attention</div><div class="stat-progress" aria-hidden="true"><span style="width: 0%;"></span></div></article>
+          <article class="card stat-card"><div class="stat-title">Auto-Approved</div><div class="stat-value" id="stat-auto-approved">—</div><div class="stat-label">High AI confidence</div><div class="stat-progress" aria-hidden="true"><span style="width: 0%;"></span></div></article>
+          <article class="card stat-card"><div class="stat-title">Approved</div><div class="stat-value" id="stat-approved">—</div><div class="stat-label">Total in vault</div><div class="stat-progress" aria-hidden="true"><span style="width: 0%;"></span></div></article>
+          <article class="card stat-card"><div class="stat-title">Rejected</div><div class="stat-value" id="stat-rejected">—</div><div class="stat-label">Total rejected</div><div class="stat-progress" aria-hidden="true"><span style="width: 0%;"></span></div></article>
         </section>
         <section class="card queue-panel" aria-label="Approval queue">
           <div class="queue-header">
@@ -172,53 +172,9 @@
           </div>
           <div class="table-wrap">
             <table class="approval-table">
-              <thead><tr><th scope="col">Item</th><th scope="col">Type</th><th scope="col">Submitted By</th><th scope="col">Status</th><th scope="col">Priority</th><th scope="col">Date</th><th scope="col" aria-label="Open item"></th></tr></thead>
-              <tbody>
-                <tr>
-                  <td><div class="item-cell"><div class="thumb" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 6h14v12H5V6z" stroke="currentColor" stroke-width="1.6" /><path d="M8 15l3-3 2 2 2.5-3 2.5 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg></div><div class="item-name">Northstar Campaign Hero</div></div></td>
-                  <td class="type-cell">Image</td>
-                  <td><div class="submitter">Lina Park</div><div class="department">Marketing</div></td>
-                  <td><span class="status"><span class="status-dot"></span>Pending review</span></td>
-                  <td><span class="priority high">High</span></td>
-                  <td class="date-cell">Jun 24</td>
-                  <td class="arrow-cell">→</td>
-                </tr>
-                <tr>
-                  <td><div class="item-cell"><div class="thumb" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 7h14v10H5V7z" stroke="currentColor" stroke-width="1.6" /><path d="M8 10h8M8 13h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /></svg></div><div class="item-name">Q3 Strategy Deck</div></div></td>
-                  <td class="type-cell">Presentation</td>
-                  <td><div class="submitter">Marcus Chen</div><div class="department">Corporate</div></td>
-                  <td><span class="status"><span class="status-dot"></span>Pending review</span></td>
-                  <td><span class="priority medium">Medium</span></td>
-                  <td class="date-cell">Jun 27</td>
-                  <td class="arrow-cell">→</td>
-                </tr>
-                <tr>
-                  <td><div class="item-cell"><div class="thumb" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4.5 8h15M7 8l2-3h6l2 3M7 8v11h10V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /><path d="M9.5 12h5M9.5 15h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /></svg></div><div class="item-name">Product Logo Lockup</div></div></td>
-                  <td class="type-cell">Logo</td>
-                  <td><div class="submitter">Avery Morgan</div><div class="department">Brand</div></td>
-                  <td><span class="status"><span class="status-dot"></span>In progress</span></td>
-                  <td><span class="priority high">High</span></td>
-                  <td class="date-cell">Jun 30</td>
-                  <td class="arrow-cell">→</td>
-                </tr>
-                <tr>
-                  <td><div class="item-cell"><div class="thumb" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 8h10v8H5V8z" stroke="currentColor" stroke-width="1.6" /><path d="M15 10.5l4-2.5v8l-4-2.5" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" /></svg></div><div class="item-name">Customer Story Video</div></div></td>
-                  <td class="type-cell">Video</td>
-                  <td><div class="submitter">Riley Carter</div><div class="department">Demand Gen</div></td>
-                  <td><span class="status"><span class="status-dot"></span>Pending review</span></td>
-                  <td><span class="priority medium">Medium</span></td>
-                  <td class="date-cell">Jul 2</td>
-                  <td class="arrow-cell">→</td>
-                </tr>
-                <tr>
-                  <td><div class="item-cell"><div class="thumb" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M7 5h10v14H7V5z" stroke="currentColor" stroke-width="1.6" /><path d="M9.5 9h5M9.5 12h5M9.5 15h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /></svg></div><div class="item-name">Sales Playbook 2026</div></div></td>
-                  <td class="type-cell">PDF</td>
-                  <td><div class="submitter">Casey Nguyen</div><div class="department">Enablement</div></td>
-                  <td><span class="status"><span class="status-dot grey"></span>Draft</span></td>
-                  <td><span class="priority low">Low</span></td>
-                  <td class="date-cell">Jul 6</td>
-                  <td class="arrow-cell">→</td>
-                </tr>
+              <thead><tr><th scope="col">Item</th><th scope="col">Type</th><th scope="col">AI Suggestion</th><th scope="col">Confidence</th><th scope="col">Date</th><th scope="col" aria-label="Actions"></th></tr></thead>
+              <tbody id="approval-tbody">
+                <tr><td colspan="6" style="text-align:center;color:var(--text-secondary);padding:32px;">Loading pending approvals…</td></tr>
               </tbody>
             </table>
           </div>
@@ -227,5 +183,107 @@
       </div>
     </main>
   </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = "https://ksvxslxwrfembxhmavqw.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_RomL2BWgUhpweBERLtSJ6A_c2ev74Wu";
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    function confidenceBadge(confidence, pct) {
+      const colorMap = { green: "#4EBA72", yellow: "var(--gold)", red: "#D9534F" };
+      const color = colorMap[confidence] || "#888888";
+      return `<span style="display:inline-flex;align-items:center;gap:6px;color:${color};font-weight:700;font-size:0.82rem;">
+        <span style="width:8px;height:8px;border-radius:50%;background:${color};display:inline-block;"></span>
+        ${confidence ? confidence.toUpperCase() : "—"} ${pct != null ? pct + "%" : ""}
+      </span>`;
+    }
+
+    async function loadPendingApprovals() {
+      const tbody = document.getElementById("approval-tbody");
+
+      const { data, error } = await sb
+        .from("dump_assets")
+        .select("*")
+        .eq("approval_status", "pending")
+        .order("ai_confidence_pct", { ascending: false });
+
+      if (error) {
+        console.error("Supabase fetch error:", error);
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--text-secondary);padding:32px;">Could not load approvals.</td></tr>`;
+        return;
+      }
+
+      if (!data || data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--text-secondary);padding:32px;">No files awaiting review. Everything is caught up.</td></tr>`;
+        document.getElementById("stat-pending").textContent = "0";
+        return;
+      }
+
+      document.getElementById("stat-pending").textContent = data.length;
+
+      tbody.innerHTML = "";
+      data.forEach(row => {
+        const tr = document.createElement("tr");
+        tr.dataset.id = row.id;
+        tr.innerHTML = `
+          <td><div class="item-cell"><div class="thumb" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 6h14v12H5V6z" stroke="currentColor" stroke-width="1.6" /></svg></div><div class="item-name">${row.name || "Untitled"}</div></div></td>
+          <td class="type-cell">${row.category || row.mime_type || "—"}</td>
+          <td>${row.ai_slot_name || "<span style=\\"color:var(--text-secondary);\\">No match</span>"}</td>
+          <td>${confidenceBadge(row.ai_confidence, row.ai_confidence_pct)}</td>
+          <td class="date-cell">${row.synced_at ? new Date(row.synced_at).toLocaleDateString() : "—"}</td>
+          <td style="white-space:nowrap;display:flex;gap:8px;justify-content:flex-end;">
+            <button class="approve-btn" data-id="${row.id}" style="background:#4EBA72;color:#0a0a0a;border:none;border-radius:8px;padding:6px 12px;font-weight:700;font-size:0.78rem;cursor:pointer;">Approve</button>
+            <button class="reject-btn" data-id="${row.id}" style="background:transparent;color:#D9534F;border:1px solid #D9534F;border-radius:8px;padding:6px 12px;font-weight:700;font-size:0.78rem;cursor:pointer;">Reject</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.querySelectorAll(".approve-btn").forEach(btn => {
+        btn.addEventListener("click", () => handleDecision(btn.dataset.id, "approved"));
+      });
+      document.querySelectorAll(".reject-btn").forEach(btn => {
+        btn.addEventListener("click", () => handleDecision(btn.dataset.id, "rejected"));
+      });
+    }
+
+    async function handleDecision(id, decision) {
+      const { error } = await sb
+        .from("dump_assets")
+        .update({ approval_status: decision })
+        .eq("id", id);
+
+      if (error) {
+        console.error("Failed to update approval_status:", error);
+        alert("Something went wrong saving that decision. Please try again.");
+        return;
+      }
+
+      // Remove the row from view immediately — no full page reload needed
+      const row = document.querySelector(`tr[data-id="${id}"]`);
+      if (row) row.remove();
+
+      const remaining = document.querySelectorAll("#approval-tbody tr[data-id]").length;
+      document.getElementById("stat-pending").textContent = remaining;
+
+      if (remaining === 0) {
+        document.getElementById("approval-tbody").innerHTML =
+          `<tr><td colspan="6" style="text-align:center;color:var(--text-secondary);padding:32px;">No files awaiting review. Everything is caught up.</td></tr>`;
+      }
+    }
+
+    async function loadStats() {
+      const { count: approvedCount } = await sb.from("dump_assets").select("*", { count: "exact", head: true }).eq("approval_status", "approved");
+      const { count: rejectedCount } = await sb.from("dump_assets").select("*", { count: "exact", head: true }).eq("approval_status", "rejected");
+
+      document.getElementById("stat-approved").textContent = approvedCount ?? "0";
+      document.getElementById("stat-rejected").textContent = rejectedCount ?? "0";
+      document.getElementById("stat-auto-approved").textContent = approvedCount ?? "0";
+    }
+
+    loadPendingApprovals();
+    loadStats();
+  </script>
 </body>
 </html>
