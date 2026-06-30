@@ -65,6 +65,36 @@ td{padding:20px 22px;border-top:1px solid rgba(255,255,255,.04);font-size:.92rem
 .user small{display:block;color:var(--text);margin-top:4px;}
 @media(max-width:1200px){.stats{grid-template-columns:repeat(2,1fr);}.library-grid{grid-template-columns:repeat(2,1fr);}}
 @media(max-width:850px){.sidebar{position:relative;width:100%;height:auto;}main{margin-left:0;padding:24px;}.app{display:block;}.stats{grid-template-columns:1fr;}.library-grid{grid-template-columns:1fr;}table{min-width:760px;}.table-wrap{overflow:auto;}}
+.profile { position: relative; cursor: pointer; }
+.profile:hover { background: rgba(255,255,255,0.03); }
+#accountDropdown {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  width: 100%;
+  background: #161616;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  padding: 6px;
+  display: none;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+  z-index: 50;
+}
+#accountDropdown.open { display: block; }
+#accountDropdown a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-secondary, #888);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+#accountDropdown a:hover { background: rgba(255,255,255,0.05); color: #fff; }
+#accountDropdown svg { width: 15px; height: 15px; flex-shrink: 0; }
+
 </style>
 </head>
 <body>
@@ -83,6 +113,10 @@ td{padding:20px 22px;border-top:1px solid rgba(255,255,255,.04);font-size:.92rem
 <div class="profile">
 <div class="avatar">AM</div>
 <div><h4>Avery Morgan</h4><span>Brand Keeper</span></div>
+<div id="accountDropdown">
+<a href="settings.html"><svg viewBox="0 0 24 24" fill="none"><path d="M12 8.2A3.8 3.8 0 1 1 12 15.8A3.8 3.8 0 0 1 12 8.2z" stroke="currentColor" stroke-width="1.7" /></svg>Settings</a>
+<a href="index.html"><svg viewBox="0 0 24 24" fill="none"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /></svg>Sign out</a>
+</div>
 </div>
 </aside>
 <main>
@@ -393,5 +427,21 @@ td{padding:20px 22px;border-top:1px solid rgba(255,255,255,.04);font-size:.92rem
 </script>
 <!-- ═══ END FLOATING BUBBLE ═══ -->
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const profile = document.querySelector(".profile");
+  const dropdown = document.getElementById("accountDropdown");
+  if (!profile || !dropdown) return;
+
+  profile.addEventListener("click", function (e) {
+    e.stopPropagation();
+    dropdown.classList.toggle("open");
+  });
+
+  document.addEventListener("click", function () {
+    dropdown.classList.remove("open");
+  });
+});
+</script>
 </body>
 </html>

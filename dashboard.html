@@ -96,6 +96,36 @@
     }
     @media (max-width: 460px) { .nav { grid-template-columns: repeat(2, 1fr); } .page-title { font-size: 2.35rem; } .panel, .stat-card { padding: 20px; } .approval-row { padding: 10px; gap: 11px; } }
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; } }
+  .profile { position: relative; cursor: pointer; }
+.profile:hover { background: rgba(255,255,255,0.03); }
+#accountDropdown {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  width: 100%;
+  background: #161616;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  padding: 6px;
+  display: none;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+  z-index: 50;
+}
+#accountDropdown.open { display: block; }
+#accountDropdown a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-secondary, #888);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+#accountDropdown a:hover { background: rgba(255,255,255,0.05); color: #fff; }
+#accountDropdown svg { width: 15px; height: 15px; flex-shrink: 0; }
+
   </style>
 </head>
 <body>
@@ -138,6 +168,10 @@
           <div class="profile-name">Avery Morgan</div>
           <div class="profile-role">Brand Keeper</div>
         </div>
+        <div id="accountDropdown">
+          <a href="settings.html"><svg viewBox="0 0 24 24" fill="none"><path d="M12 8.2A3.8 3.8 0 1 1 12 15.8A3.8 3.8 0 0 1 12 8.2z" stroke="currentColor" stroke-width="1.7" /></svg>Settings</a>
+          <a href="index.html"><svg viewBox="0 0 24 24" fill="none"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /></svg>Sign out</a>
+        </div>
       </div>
     </aside>
     <main class="main">
@@ -156,27 +190,27 @@
         <section class="stats-grid" aria-label="Brand governance statistics">
           <article class="card stat-card">
             <div class="stat-title">Brand Health</div>
-            <div class="stat-value">86</div>
-            <div class="stat-label">Strong</div>
-            <div class="stat-progress" aria-hidden="true"><span style="width: 86%;"></span></div>
+            <div class="stat-value" id="stat-brand-health">—</div>
+            <div class="stat-label" id="stat-brand-health-label">Not yet defined</div>
+            <div class="stat-progress" aria-hidden="true"><span style="width: 0%;"></span></div>
           </article>
           <article class="card stat-card">
             <div class="stat-title">Compliance</div>
-            <div class="stat-value">92%</div>
-            <div class="stat-label">Compliant</div>
-            <div class="stat-progress" aria-hidden="true"><span style="width: 92%;"></span></div>
+            <div class="stat-value" id="stat-compliance">—</div>
+            <div class="stat-label" id="stat-compliance-label">Not yet defined</div>
+            <div class="stat-progress" aria-hidden="true"><span style="width: 0%;"></span></div>
           </article>
           <article class="card stat-card">
             <div class="stat-title">Pending Approvals</div>
-            <div class="stat-value">18</div>
-            <div class="stat-label">Awaiting review</div>
-            <div class="stat-progress" aria-hidden="true"><span style="width: 58%;"></span></div>
+            <div class="stat-value" id="stat-pending-approvals">—</div>
+            <div class="stat-label" id="stat-pending-label">Awaiting review</div>
+            <div class="stat-progress" aria-hidden="true"><span id="stat-pending-bar" style="width: 0%;"></span></div>
           </article>
           <article class="card stat-card">
             <div class="stat-title">Open Issues</div>
-            <div class="stat-value">12</div>
-            <div class="stat-label">Requires attention</div>
-            <div class="stat-progress" aria-hidden="true"><span style="width: 42%;"></span></div>
+            <div class="stat-value" id="stat-open-issues">—</div>
+            <div class="stat-label" id="stat-issues-label">Low/uncertain AI confidence</div>
+            <div class="stat-progress" aria-hidden="true"><span id="stat-issues-bar" style="width: 0%;"></span></div>
           </article>
         </section>
         <section class="dashboard-grid" aria-label="Governance activity">
@@ -185,31 +219,8 @@
               <h2 class="panel-title">Recent Approvals</h2>
               <span class="panel-kicker">Live queue</span>
             </div>
-            <div class="approval-list">
-              <div class="approval-row">
-                <div class="thumb" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 6h14v12H5V6z" stroke="currentColor" stroke-width="1.6" /><path d="M8 15l3-3 2 2 2.5-3 2.5 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg></div>
-                <div><div class="asset-name">Northstar Campaign Hero</div><div class="asset-meta">Submitted by Lina Park</div></div>
-                <div class="asset-type">Image</div>
-                <div class="status-dot" title="Pending"></div>
-              </div>
-              <div class="approval-row">
-                <div class="thumb" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M7 5h10v14H7V5z" stroke="currentColor" stroke-width="1.6" /><path d="M9.5 9h5M9.5 12h5M9.5 15h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /></svg></div>
-                <div><div class="asset-name">Partner Launch One-Sheet</div><div class="asset-meta">Submitted by Marcus Chen</div></div>
-                <div class="asset-type">PDF</div>
-                <div class="status-dot approved" title="Approved"></div>
-              </div>
-              <div class="approval-row">
-                <div class="thumb" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4.5 8h15M7 8l2-3h6l2 3M7 8v11h10V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /><path d="M9.5 12h5M9.5 15h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /></svg></div>
-                <div><div class="asset-name">Product Logo Lockup Set</div><div class="asset-meta">Submitted by Avery Morgan</div></div>
-                <div class="asset-type">Logo</div>
-                <div class="status-dot" title="Pending"></div>
-              </div>
-              <div class="approval-row">
-                <div class="thumb" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 7h14v10H5V7z" stroke="currentColor" stroke-width="1.6" /><path d="M8 10h8M8 13h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /></svg></div>
-                <div><div class="asset-name">Enterprise Email Template</div><div class="asset-meta">Submitted by Nia Roberts</div></div>
-                <div class="asset-type">HTML</div>
-                <div class="status-dot approved" title="Approved"></div>
-              </div>
+            <div class="approval-list" id="recent-approvals-list">
+              <div class="approval-row"><div style="padding:20px;color:var(--text-secondary);">Loading recent activity…</div></div>
             </div>
           </article>
           <article class="card panel">
@@ -217,18 +228,132 @@
               <h2 class="panel-title">Baseline Completion</h2>
               <span class="panel-kicker">Standards</span>
             </div>
-            <div class="baseline-list">
-              <div class="baseline-item"><div class="baseline-meta"><span class="baseline-name">Logo</span><span class="baseline-value">96%</span></div><div class="bar" aria-hidden="true"><span style="width: 96%;"></span></div></div>
-              <div class="baseline-item"><div class="baseline-meta"><span class="baseline-name">Typography</span><span class="baseline-value">82%</span></div><div class="bar" aria-hidden="true"><span style="width: 82%;"></span></div></div>
-              <div class="baseline-item"><div class="baseline-meta"><span class="baseline-name">Colors</span><span class="baseline-value">91%</span></div><div class="bar" aria-hidden="true"><span style="width: 91%;"></span></div></div>
-              <div class="baseline-item"><div class="baseline-meta"><span class="baseline-name">Photography</span><span class="baseline-value">67%</span></div><div class="bar" aria-hidden="true"><span style="width: 67%;"></span></div></div>
-              <div class="baseline-item"><div class="baseline-meta"><span class="baseline-name">Voice</span><span class="baseline-value">74%</span></div><div class="bar" aria-hidden="true"><span style="width: 74%;"></span></div></div>
+            <div class="baseline-list" id="baseline-completion-list">
+              <div style="padding:8px 0;color:var(--text-secondary);font-size:0.85rem;">Loading…</div>
             </div>
           </article>
         </section>
       </div>
     </main>
   </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = "https://ksvxslxwrfembxhmavqw.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_RomL2BWgUhpweBERLtSJ6A_c2ev74Wu";
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // Same 11-category taxonomy used on brand-maturity.html, kept in sync
+    // manually since there's no shared server-side source for this page.
+    const TAXONOMY = [
+      { name: "Logo & Identity Marks", slots: ["logo_primary","logo_reversed","logo_icon","logo_mono","logo_horizontal","logo_stacked","logo_clearspace"] },
+      { name: "Color Palette", slots: ["color_primary","color_secondary","color_neutral","color_background"] },
+      { name: "Typography", slots: ["type_heading","type_body","type_web_fallback","type_print"] },
+      { name: "Photography & Imagery", slots: ["img_photography","img_icons","img_illustration","img_pattern"] },
+      { name: "Web & UI Assets", slots: ["ui_button_primary","ui_button_secondary","ui_button_ghost","ui_form_fields","ui_favicon","ui_web_banner","ui_social_linkedin","ui_social_instagram","ui_social_x","ui_social_facebook","ui_design_system"] },
+      { name: "Email", slots: ["email_signature","email_newsletter","email_transactional"] },
+    ];
+
+    function escapeHtml(str) {
+      return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    function timeAgo(dateStr) {
+      if (!dateStr) return "";
+      const diffMs = Date.now() - new Date(dateStr).getTime();
+      const mins = Math.floor(diffMs / 60000);
+      if (mins < 1) return "Just now";
+      if (mins < 60) return `${mins}m ago`;
+      const hours = Math.floor(mins / 60);
+      if (hours < 24) return `${hours}h ago`;
+      return `${Math.floor(hours / 24)}d ago`;
+    }
+
+    async function loadStats() {
+      const { count: pendingCount } = await sb
+        .from("dump_assets").select("*", { count: "exact", head: true }).eq("approval_status", "pending");
+
+      // "Open Issues" = pending items the AI was NOT confident about
+      // (yellow or red), since those are the ones genuinely needing a
+      // human decision rather than being a near-certain auto-approval.
+      const { count: issuesCount } = await sb
+        .from("dump_assets").select("*", { count: "exact", head: true })
+        .eq("approval_status", "pending").in("ai_confidence", ["yellow", "red"]);
+
+      document.getElementById("stat-pending-approvals").textContent = pendingCount ?? "0";
+      document.getElementById("stat-open-issues").textContent = issuesCount ?? "0";
+
+      // Brand Health and Compliance have no defined formula yet — rather
+      // than fabricate a number, this is left honestly blank with a label
+      // explaining why, until a real scoring method is decided.
+    }
+
+    async function loadRecentApprovals() {
+      const list = document.getElementById("recent-approvals-list");
+      const { data, error } = await sb
+        .from("dump_assets").select("*").order("synced_at", { ascending: false }).limit(4);
+
+      if (error || !data) {
+        list.innerHTML = `<div style="padding:20px;color:var(--text-secondary);">Could not load recent activity.</div>`;
+        return;
+      }
+
+      if (data.length === 0) {
+        list.innerHTML = `<div style="padding:20px;color:var(--text-secondary);">No activity yet.</div>`;
+        return;
+      }
+
+      list.innerHTML = data.map(row => {
+        const isApproved = row.approval_status === "approved";
+        return `
+          <div class="approval-row">
+            <div class="thumb" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 6h14v12H5V6z" stroke="currentColor" stroke-width="1.6" /></svg></div>
+            <div><div class="asset-name">${escapeHtml(row.name || "Untitled")}</div><div class="asset-meta">${row.ai_slot_name ? escapeHtml(row.ai_slot_name) : "Unclassified"} · ${timeAgo(row.synced_at)}</div></div>
+            <div class="asset-type">${escapeHtml(row.category || "—")}</div>
+            <div class="status-dot ${isApproved ? "approved" : ""}" title="${isApproved ? "Approved" : "Pending"}"></div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    async function loadBaselineCompletion() {
+      const list = document.getElementById("baseline-completion-list");
+      const { data, error } = await sb
+        .from("dump_assets").select("ai_slot_id").eq("approval_status", "approved");
+
+      if (error) {
+        list.innerHTML = `<div style="color:var(--text-secondary);">Could not load baseline data.</div>`;
+        return;
+      }
+
+      const filledSlotIds = new Set((data || []).map(row => row.ai_slot_id).filter(Boolean));
+
+      list.innerHTML = TAXONOMY.map(category => {
+        const filled = category.slots.filter(id => filledSlotIds.has(id)).length;
+        const pct = Math.round((filled / category.slots.length) * 100);
+        return `
+          <div class="baseline-item">
+            <div class="baseline-meta"><span class="baseline-name">${escapeHtml(category.name)}</span><span class="baseline-value">${pct}%</span></div>
+            <div class="bar" aria-hidden="true"><span style="width: ${pct}%;"></span></div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    loadStats();
+    loadRecentApprovals();
+    loadBaselineCompletion();
+
+    // Live sync — if anything changes (another tab, or the Python script
+    // syncing new files), refresh everything on this page automatically.
+    sb.channel("dashboard-live-sync")
+      .on("postgres_changes", { event: "*", schema: "public", table: "dump_assets" }, () => {
+        loadStats();
+        loadRecentApprovals();
+        loadBaselineCompletion();
+      })
+      .subscribe();
+  </script>
 <!-- ═══ DEADRECKONER FLOATING AI CONSULTANT BUBBLE ═══ -->
 <style>
   #drBubbleBtn {
@@ -447,5 +572,21 @@
 </script>
 <!-- ═══ END FLOATING BUBBLE ═══ -->
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const profile = document.querySelector(".profile");
+  const dropdown = document.getElementById("accountDropdown");
+  if (!profile || !dropdown) return;
+
+  profile.addEventListener("click", function (e) {
+    e.stopPropagation();
+    dropdown.classList.toggle("open");
+  });
+
+  document.addEventListener("click", function () {
+    dropdown.classList.remove("open");
+  });
+});
+</script>
 </body>
 </html>
