@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deadreckoner — Assets</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0a;--sidebar:#0d0d0d;--surface:#111111;--surface-2:#171717;--gold:#C9A84C;--gold-soft:rgba(201,168,76,.12);--white:#F5F5F5;--text:#888888;--border:rgba(255,255,255,.06);--green:#4EBA72;--radius:18px;--transition:.22s ease;--sidebar-width:220px;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{background:var(--bg);scroll-behavior:smooth;}
+body{background:radial-gradient(circle at top right,rgba(201,168,76,.07),transparent 35rem),var(--bg);color:var(--white);font-family:Inter,sans-serif;-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:inherit;}
+.app{display:flex;min-height:100vh;}
+.sidebar{position:fixed;left:0;top:0;width:var(--sidebar-width);height:100vh;background:var(--sidebar);border-right:1px solid var(--border);padding:28px 18px;display:flex;flex-direction:column;}
+.brand{color:var(--gold);font-size:.75rem;font-weight:800;letter-spacing:4px;margin-bottom:38px;}
+.nav{display:flex;flex-direction:column;gap:5px;}
+.nav a{position:relative;display:flex;align-items:center;gap:12px;height:44px;padding:0 14px;color:var(--text);border-radius:12px;transition:var(--transition);font-size:.9rem;font-weight:500;}
+.nav a svg{width:17px;height:17px;}
+.nav a::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:2px;background:transparent;border-radius:2px;}
+.nav a:hover{background:rgba(255,255,255,.03);color:var(--white);}
+.nav a.active{background:var(--gold-soft);color:var(--white);}
+.nav a.active::before{background:var(--gold);}
+.profile{margin-top:auto;border:1px solid var(--border);border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px;}
+.avatar{width:38px;height:38px;border-radius:50%;background:rgba(201,168,76,.14);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;border:1px solid rgba(201,168,76,.35);}
+.profile h4{font-size:.86rem;font-weight:600;}
+.profile span{display:block;color:var(--text);font-size:.74rem;margin-top:2px;}
+main{margin-left:var(--sidebar-width);width:100%;padding:44px;}
+.container{max-width:1280px;margin:auto;}
+.page-title{font-size:3.5rem;font-weight:300;letter-spacing:-2px;}
+.subtitle{margin-top:14px;color:var(--text);max-width:700px;line-height:1.7;}
+.stats{margin-top:38px;display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;position:relative;transition:var(--transition);overflow:hidden;}
+.stat:hover{transform:translateY(-3px);border-color:rgba(201,168,76,.35);}
+.stat small{color:var(--text);text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;font-weight:700;}
+.stat h2{margin-top:22px;font-size:2.55rem;font-weight:500;letter-spacing:-2px;}
+.stat p{margin-top:8px;color:var(--gold);font-size:.86rem;font-weight:600;}
+.stat::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:3px;background:linear-gradient(90deg,var(--gold),rgba(201,168,76,.15));}
+.section-label{margin-top:52px;margin-bottom:18px;color:var(--text);font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;}
+.library-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+.library-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:18px;transition:var(--transition);cursor:pointer;}
+.library-card:hover{transform:translateY(-4px);border-color:rgba(201,168,76,.4);}
+.library-thumb{width:100%;height:150px;border-radius:12px;background:#1a1a1a;border:1px solid rgba(255,255,255,.04);margin-bottom:18px;}
+.library-bottom{display:flex;align-items:center;justify-content:space-between;}
+.library-name{font-size:1rem;font-weight:600;}
+.library-count{margin-top:6px;color:var(--text);font-size:.82rem;}
+.library-arrow{color:var(--gold);font-size:1rem;}
+.recent-header{margin-top:54px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;}
+.recent-title{color:var(--text);text-transform:uppercase;letter-spacing:.18em;font-size:.72rem;font-weight:700;}
+.view-link{color:var(--gold);font-size:.85rem;font-weight:600;}
+.table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:18px;overflow:hidden;}
+table{width:100%;border-collapse:collapse;}
+thead{background:#141414;}
+th{text-align:left;padding:18px 22px;color:#666;text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;font-weight:700;}
+tbody tr{transition:var(--transition);}
+tbody tr:hover{background:rgba(201,168,76,.04);}
+td{padding:20px 22px;border-top:1px solid rgba(255,255,255,.04);font-size:.92rem;}
+.status{display:inline-flex;align-items:center;gap:8px;}
+.dot{width:8px;height:8px;border-radius:50%;}
+.dot.green{background:var(--green);}
+.dot.gold{background:var(--gold);}
+.user{color:var(--white);}
+.user small{display:block;color:var(--text);margin-top:4px;}
+@media(max-width:1200px){.stats{grid-template-columns:repeat(2,1fr);}.library-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:850px){.sidebar{position:relative;width:100%;height:auto;}main{margin-left:0;padding:24px;}.app{display:block;}.stats{grid-template-columns:1fr;}.library-grid{grid-template-columns:1fr;}table{min-width:760px;}.table-wrap{overflow:auto;}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+<div class="brand">DEADRECKONER</div>
+<nav class="nav">
+<a href="dashboard.html"><svg viewBox="0 0 24 24" fill="none"><path d="M4 13h7V4H4v9zM13 20h7V4h-7v16zM4 20h7v-5H4v5z" stroke="currentColor" stroke-width="1.7"/></svg>Command Center</a>
+<a class="active" href="assets.html"><svg viewBox="0 0 24 24" fill="none"><path d="M4 7.5h7l2 2H20v9H4v-11z" stroke="currentColor" stroke-width="1.7"/></svg>Assets</a>
+<a href="approvals.html"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.2 4.2L19 6.8" stroke="currentColor" stroke-width="1.8"/></svg>Approvals</a>
+<a href="#"><svg viewBox="0 0 24 24" fill="none"><path d="M6 5h12v14H6z" stroke="currentColor" stroke-width="1.7"/></svg>Requests</a>
+<a href="#"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.7"/></svg>AI Consultant</a>
+<a href="#"><svg viewBox="0 0 24 24" fill="none"><path d="M12 8a4 4 0 100 8 4 4 0 000-8z" stroke="currentColor" stroke-width="1.7"/></svg>Settings</a>
+</nav>
+<div class="profile">
+<div class="avatar">AM</div>
+<div><h4>Avery Morgan</h4><span>Brand Keeper</span></div>
+</div>
+</aside>
+<main>
+<div class="container">
+<h1 class="page-title">Assets</h1>
+<p class="subtitle">The single source of truth for on-brand assets. Organized. Approved. Always up to date.</p>
+<section class="stats">
+<div class="stat"><small>Total Assets</small><h2>2,847</h2><p>Across all libraries</p></div>
+<div class="stat"><small>Approved</small><h2>2,351</h2><p>83% of total</p></div>
+<div class="stat"><small>Pending Review</small><h2>146</h2><p>Awaiting gatekeeper</p></div>
+<div class="stat"><small>Expired / Outdated</small><h2>78</h2><p>Require attention</p></div>
+</section>
+<div class="section-label">Asset Libraries</div>
+<section class="library-grid">
+<div class="library-card"><div class="library-thumb"></div><div class="library-bottom"><div><div class="library-name">Photos</div><div class="library-count">1,284 assets</div></div><div class="library-arrow">→</div></div></div>
+<div class="library-card"><div class="library-thumb"></div><div class="library-bottom"><div><div class="library-name">Videos</div><div class="library-count">312 assets</div></div><div class="library-arrow">→</div></div></div>
+<div class="library-card"><div class="library-thumb"></div><div class="library-bottom"><div><div class="library-name">Presentations</div><div class="library-count">426 assets</div></div><div class="library-arrow">→</div></div></div>
+<div class="library-card"><div class="library-thumb"></div><div class="library-bottom"><div><div class="library-name">Sales Materials</div><div class="library-count">825 assets</div></div><div class="library-arrow">→</div></div></div>
+</section>
+<div class="recent-header"><div class="recent-title">Recently Added</div><a href="#" class="view-link">View all assets →</a></div>
+<div class="table-wrap">
+<table>
+<thead><tr><th>NAME</th><th>TYPE</th><th>ADDED BY</th><th>DATE</th><th>STATUS</th></tr></thead>
+<tbody>
+<tr><td>Mountain Landscape 01</td><td>Photo</td><td class="user">Jordan Lee<small>Marketing</small></td><td>May 23</td><td><span class="status"><span class="dot green"></span>Approved</span></td></tr>
+<tr><td>Q2 Strategy Overview Deck</td><td>Presentation</td><td class="user">Taylor Kim<small>Corporate Strategy</small></td><td>May 22</td><td><span class="status"><span class="dot green"></span>Approved</span></td></tr>
+<tr><td>Customer Story Video</td><td>Video</td><td class="user">Riley Carter<small>Demand Gen</small></td><td>May 21</td><td><span class="status"><span class="dot green"></span>Approved</span></td></tr>
+<tr><td>Brand Typography Sheet</td><td>Document</td><td class="user">Avery Morgan<small>Brand</small></td><td>May 20</td><td><span class="status"><span class="dot gold"></span>Pending</span></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</main>
+</div>
+</body>
+</html>

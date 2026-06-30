@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deadreckoner — Approvals</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --background: #0a0a0a; --sidebar: #0d0d0d; --surface: #111111; --surface-soft: #151515; --surface-muted: #1a1a1a;
+      --gold: #C9A84C; --gold-soft: rgba(201, 168, 76, 0.12); --gold-border: rgba(201, 168, 76, 0.35);
+      --text-primary: #F5F5F5; --text-secondary: #888888; --text-muted: #5f5f5f;
+      --border: rgba(255, 255, 255, 0.06); --border-strong: rgba(255, 255, 255, 0.1); --green: #4EBA72;
+      --radius: 18px; --radius-sm: 12px; --transition: 220ms ease; --sidebar-width: 220px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { min-height: 100%; background: var(--background); }
+    body { min-height: 100vh; font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: radial-gradient(circle at 72% 0%, rgba(201, 168, 76, 0.07), transparent 32rem), var(--background); color: var(--text-primary); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+    a { color: inherit; text-decoration: none; }
+    button, select { font: inherit; }
+    .app { min-height: 100vh; display: flex; }
+    .sidebar { position: fixed; inset: 0 auto 0 0; width: var(--sidebar-width); min-height: 100vh; padding: 28px 18px 22px; display: flex; flex-direction: column; background: var(--sidebar); border-right: 1px solid var(--border); z-index: 20; }
+    .brand { padding: 4px 12px 38px; color: var(--gold); font-size: 0.75rem; font-weight: 800; letter-spacing: 4px; line-height: 1; text-transform: uppercase; white-space: nowrap; display: block; }
+    .nav { display: flex; flex-direction: column; gap: 5px; }
+    .nav-link { position: relative; min-height: 44px; padding: 0 12px 0 16px; display: flex; align-items: center; gap: 11px; border-radius: 12px; color: var(--text-secondary); font-size: 0.9rem; font-weight: 500; letter-spacing: -0.01em; transition: color var(--transition), background var(--transition); }
+    .nav-link::before { content: ""; position: absolute; left: 0; top: 11px; bottom: 11px; width: 2px; border-radius: 999px; background: transparent; transition: background var(--transition); }
+    .nav-link:hover { color: var(--text-primary); background: rgba(255, 255, 255, 0.035); }
+    .nav-link.active { color: var(--text-primary); background: var(--gold-soft); }
+    .nav-link.active::before { background: var(--gold); }
+    .nav-link svg { width: 17px; height: 17px; color: currentColor; opacity: 0.92; flex: 0 0 auto; }
+    .profile { margin-top: auto; padding: 14px 12px; display: flex; align-items: center; gap: 12px; border: 1px solid var(--border); border-radius: 16px; background: rgba(255, 255, 255, 0.018); }
+    .avatar { width: 38px; height: 38px; display: grid; place-items: center; flex: 0 0 auto; border-radius: 50%; background: var(--gold-soft); border: 1px solid var(--gold-border); color: var(--gold); font-size: 0.76rem; font-weight: 800; letter-spacing: 0.06em; }
+    .profile-meta { min-width: 0; }
+    .profile-name { color: var(--text-primary); font-size: 0.86rem; font-weight: 600; letter-spacing: -0.02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .profile-role { margin-top: 3px; color: var(--text-secondary); font-size: 0.74rem; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .main { width: 100%; min-height: 100vh; margin-left: var(--sidebar-width); padding: 44px 44px 52px; }
+    .content { width: min(100%, 1240px); margin: 0 auto; }
+    .page-header { margin-bottom: 34px; display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
+    .page-title { color: var(--text-primary); font-size: clamp(2.2rem, 4vw, 4.1rem); font-weight: 300; letter-spacing: -0.075em; line-height: 0.95; }
+    .page-subtitle { margin-top: 14px; color: var(--text-secondary); font-size: 1rem; font-weight: 400; line-height: 1.6; letter-spacing: -0.015em; }
+    .header-mark { width: 42px; height: 42px; color: var(--gold); opacity: 0.82; flex: 0 0 auto; }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 18px; }
+    .card { border: 1px solid var(--border); border-radius: var(--radius); background: linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.008)), var(--surface); transition: border-color var(--transition), background var(--transition), transform var(--transition); }
+    .card:hover { border-color: var(--gold-border); background: linear-gradient(180deg, rgba(201, 168, 76, 0.055), rgba(255, 255, 255, 0.012)), var(--surface-soft); transform: translateY(-2px); }
+    .stat-card { position: relative; min-height: 164px; padding: 24px 24px 22px; overflow: hidden; }
+    .stat-title { color: var(--text-secondary); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+    .stat-value { margin-top: 24px; color: var(--text-primary); font-size: 2.55rem; font-weight: 500; letter-spacing: -0.06em; line-height: 1; }
+    .stat-label { margin-top: 10px; color: var(--gold); font-size: 0.86rem; font-weight: 600; letter-spacing: -0.01em; }
+    .stat-progress { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: rgba(255, 255, 255, 0.045); }
+    .stat-progress span { display: block; height: 100%; background: var(--gold); border-radius: 0 999px 999px 0; }
+    .queue-panel { padding: 24px; }
+    .queue-header { margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+    .queue-title { color: var(--text-primary); font-size: 1rem; font-weight: 650; letter-spacing: -0.025em; }
+    .filter-control { min-width: 118px; height: 38px; padding: 0 34px 0 14px; border: 1px solid var(--border); border-radius: 999px; background: linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.006)), var(--surface); color: var(--text-secondary); font-size: 0.82rem; font-weight: 600; outline: none; appearance: none; cursor: pointer; transition: border-color var(--transition), color var(--transition), background var(--transition); }
+    .filter-wrap { position: relative; flex: 0 0 auto; }
+    .filter-wrap::after { content: "⌄"; position: absolute; right: 14px; top: 50%; color: var(--text-secondary); font-size: 0.9rem; pointer-events: none; transform: translateY(-55%); }
+    .filter-control:hover { border-color: var(--gold-border); color: var(--text-primary); background: var(--surface-soft); }
+    .table-wrap { overflow-x: auto; padding-bottom: 2px; }
+    .approval-table { width: 100%; min-width: 920px; border-collapse: separate; border-spacing: 0 10px; }
+    .approval-table th { padding: 0 16px 8px; color: var(--text-muted); font-size: 0.72rem; font-weight: 800; letter-spacing: 0.12em; text-align: left; text-transform: uppercase; white-space: nowrap; }
+    .approval-table th:last-child { width: 44px; padding-right: 12px; }
+    .approval-table td { padding: 14px 16px; background: rgba(255, 255, 255, 0.022); border-top: 1px solid transparent; border-bottom: 1px solid transparent; vertical-align: middle; transition: border-color var(--transition), background var(--transition), transform var(--transition); }
+    .approval-table tr td:first-child { border-left: 2px solid transparent; border-radius: 14px 0 0 14px; }
+    .approval-table tr td:last-child { border-radius: 0 14px 14px 0; }
+    .approval-table tbody tr:hover td { border-top-color: var(--gold-border); border-bottom-color: var(--gold-border); background: rgba(201, 168, 76, 0.05); transform: translateY(-2px); }
+    .approval-table tbody tr:hover td:first-child { border-left-color: var(--gold); }
+    .item-cell { display: flex; align-items: center; gap: 14px; min-width: 260px; }
+    .thumb { width: 46px; height: 46px; display: grid; place-items: center; flex: 0 0 auto; border: 1px solid var(--border-strong); border-radius: 12px; background: var(--surface-muted); color: var(--text-muted); }
+    .thumb svg { width: 22px; height: 22px; }
+    .item-name { color: var(--text-primary); font-size: 0.92rem; font-weight: 650; letter-spacing: -0.02em; white-space: nowrap; }
+    .type-cell, .date-cell { color: var(--text-secondary); font-size: 0.84rem; font-weight: 550; white-space: nowrap; }
+    .submitter { color: var(--text-primary); font-size: 0.86rem; font-weight: 600; letter-spacing: -0.015em; white-space: nowrap; }
+    .department { margin-top: 4px; color: var(--text-secondary); font-size: 0.76rem; font-weight: 500; white-space: nowrap; }
+    .status { display: inline-flex; align-items: center; gap: 8px; color: var(--text-secondary); font-size: 0.82rem; font-weight: 600; white-space: nowrap; }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 0 4px rgba(201, 168, 76, 0.11); }
+    .status-dot.green { background: var(--green); box-shadow: 0 0 0 4px rgba(78, 186, 114, 0.11); }
+    .status-dot.grey { background: var(--text-muted); box-shadow: 0 0 0 4px rgba(136, 136, 136, 0.09); }
+    .priority { font-size: 0.82rem; font-weight: 700; white-space: nowrap; }
+    .priority.high { color: var(--gold); }
+    .priority.medium, .priority.low { color: var(--text-secondary); }
+    .arrow-cell { color: var(--text-muted); font-size: 1.1rem; font-weight: 500; text-align: right; transition: color var(--transition), transform var(--transition); }
+    .approval-table tbody tr:hover .arrow-cell { color: var(--gold); transform: translateX(2px) translateY(-2px); }
+    .queue-footer { margin-top: 16px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .view-link { color: var(--gold); font-size: 0.86rem; font-weight: 650; letter-spacing: -0.01em; transition: opacity var(--transition), transform var(--transition); }
+    .view-link:hover { opacity: 0.78; }
+    @media (max-width: 1100px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 760px) {
+      :root { --sidebar-width: 100%; }
+      .app { display: block; }
+      .sidebar { position: sticky; top: 0; width: 100%; min-height: auto; padding: 18px 16px 14px; }
+      .brand { padding: 2px 6px 18px; }
+      .nav { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+      .nav-link { min-height: 40px; padding: 0 10px; justify-content: center; font-size: 0.78rem; }
+      .nav-link::before, .nav-link svg { display: none; }
+      .profile { display: none; }
+      .main { margin-left: 0; padding: 32px 16px 42px; }
+      .page-header { align-items: flex-start; }
+      .header-mark { display: none; }
+      .stats-grid { grid-template-columns: 1fr; }
+      .queue-panel { padding: 20px; }
+      .queue-header, .queue-footer { align-items: flex-start; flex-direction: column; }
+      .filter-wrap { width: 100%; }
+      .filter-control { width: 100%; }
+    }
+    @media (max-width: 460px) { .nav { grid-template-columns: repeat(2, 1fr); } .page-title { font-size: 2.35rem; } .stat-card { padding: 20px; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; } }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" aria-label="Main sidebar">
+      <a href="index.html" class="brand" aria-label="Deadreckoner home">DEADRECKONER</a>
+      <nav class="nav" aria-label="Primary navigation">
+        <a href="dashboard.html" class="nav-link">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 13h7V4H4v9zM13 20h7V4h-7v16zM4 20h7v-5H4v5z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" /></svg>
+          Command Center
+        </a>
+        <a href="assets.html" class="nav-link">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7.5h7l2 2H20v9H4v-11z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" /></svg>
+          Assets
+        </a>
+        <a href="approvals.html" class="nav-link active" aria-current="page">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 6.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          Approvals
+        </a>
+        <a href="#" class="nav-link">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 5h12v14H6V5z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" /><path d="M9 9h6M9 12h6M9 15h3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" /></svg>
+          Requests
+        </a>
+        <a href="#" class="nav-link">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4v3M12 17v3M4 12h3M17 12h3M6.4 6.4l2.1 2.1M15.5 15.5l2.1 2.1M17.6 6.4l-2.1 2.1M8.5 15.5l-2.1 2.1" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" /><circle cx="12" cy="12" r="3.5" stroke="currentColor" stroke-width="1.7" /></svg>
+          AI Consultant
+        </a>
+        <a href="#" class="nav-link">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 8.2A3.8 3.8 0 1 1 12 15.8A3.8 3.8 0 0 1 12 8.2z" stroke="currentColor" stroke-width="1.7" /><path d="M18.7 13.3c.1-.4.1-.9.1-1.3s0-.9-.1-1.3l2-1.5-2-3.5-2.4 1a8.4 8.4 0 0 0-2.2-1.3L13.8 3h-4l-.4 2.4c-.8.3-1.5.7-2.2 1.3l-2.4-1-2 3.5 2 1.5c-.1.4-.1.9-.1 1.3s0 .9.1 1.3l-2 1.5 2 3.5 2.4-1c.7.6 1.4 1 2.2 1.3l.4 2.4h4l.4-2.4c.8-.3 1.5-.7 2.2-1.3l2.4 1 2-3.5-2.1-1.5z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" /></svg>
+          Settings
+        </a>
+      </nav>
+      <div class="profile" aria-label="Current user">
+        <div class="avatar">AM</div>
+        <div class="profile-meta">
+          <div class="profile-name">Avery Morgan</div>
+          <div class="profile-role">Brand Keeper</div>
+        </div>
+      </div>
+    </aside>
+    <main class="main">
+      <div class="content">
+        <header class="page-header">
+          <div>
+            <h1 class="page-title">Approvals</h1>
+            <p class="page-subtitle">Review and approve brand requests, exceptions, and asset releases.</p>
+          </div>
+          <svg class="header-mark" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+            <circle cx="24" cy="24" r="15" stroke="currentColor" stroke-width="2" stroke-dasharray="18 8" />
+            <path d="M24 5v7M24 36v7M5 24h7M36 24h7" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            <circle cx="24" cy="24" r="2.5" fill="currentColor" />
+          </svg>
+        </header>
+        <section class="stats-grid" aria-label="Approval statistics">
+          <article class="card stat-card"><div class="stat-title">Pending Review</div><div class="stat-value">12</div><div class="stat-label">Requires your attention</div><div class="stat-progress" aria-hidden="true"><span style="width: 72%;"></span></div></article>
+          <article class="card stat-card"><div class="stat-title">In Progress</div><div class="stat-value">8</div><div class="stat-label">Awaiting others</div><div class="stat-progress" aria-hidden="true"><span style="width: 52%;"></span></div></article>
+          <article class="card stat-card"><div class="stat-title">Approved</div><div class="stat-value">156</div><div class="stat-label">This month</div><div class="stat-progress" aria-hidden="true"><span style="width: 88%;"></span></div></article>
+          <article class="card stat-card"><div class="stat-title">Rejected</div><div class="stat-value">3</div><div class="stat-label">This month</div><div class="stat-progress" aria-hidden="true"><span style="width: 18%;"></span></div></article>
+        </section>
+        <section class="card queue-panel" aria-label="Approval queue">
+          <div class="queue-header">
+            <h2 class="queue-title">Approval Queue</h2>
+            <div class="filter-wrap"><select class="filter-control" aria-label="Filter approvals"><option>Filter: All</option></select></div>
+          </div>
+          <div class="table-wrap">
+            <table class="approval-table">
+              <thead><tr><th scope="col">Item</th><th scope="col">Type</th><th scope="col">Submitted By</th><th scope="col">Status</th><th scope="col">Priority</th><th scope="col">Date</th><th scope="col" aria-label="Open item"></th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><div class="item-cell"><div class="thumb" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 6h14v12H5V6z" stroke="currentColor" stroke-width="1.6" /><path d="M8 15l3-3 2 2 2.5-3 2.5 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg></div><div class="item-name">Northstar Campaign Hero</div></div></td>
+                  <td class="type-cell">Image</td>
+                  <td><div class="submitter">Lina Park</div><div class="department">Marketing</div></td>
+                  <td><span class="status"><span class="status-dot"></span>Pending review</span></td>
+                  <td><span class="priority high">High</span></td>
+                  <td class="date-cell">Jun 24</td>
+                  <td class="arrow-cell">→</td>
+                </tr>
+                <tr>
+                  <td><div class="item-cell"><div class="thumb" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 7h14v10H5V7z" stroke="currentColor" stroke-width="1.6" /><path d="M8 10h8M8 13h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /></svg></div><div class="item-name">Q3 Strategy Deck</div></div></td>
+                  <td class="type-cell">Presentation</td>
+                  <td><div class="submitter">Marcus Chen</div><div class="department">Corporate</div></td>
+                  <td><span class="status"><span class="status-dot"></span>Pending review</span></td>
+                  <td><span class="priority medium">Medium</span></td>
+                  <td class="date-cell">Jun 27</td>
+                  <td class="arrow-cell">→</td>
+                </tr>
+                <tr>
+                  <td><div class="item-cell"><div class="thumb" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4.5 8h15M7 8l2-3h6l2 3M7 8v11h10V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /><path d="M9.5 12h5M9.5 15h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /></svg></div><div class="item-name">Product Logo Lockup</div></div></td>
+                  <td class="type-cell">Logo</td>
+                  <td><div class="submitter">Avery Morgan</div><div class="department">Brand</div></td>
+                  <td><span class="status"><span class="status-dot"></span>In progress</span></td>
+                  <td><span class="priority high">High</span></td>
+                  <td class="date-cell">Jun 30</td>
+                  <td class="arrow-cell">→</td>
+                </tr>
+                <tr>
+                  <td><div class="item-cell"><div class="thumb" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 8h10v8H5V8z" stroke="currentColor" stroke-width="1.6" /><path d="M15 10.5l4-2.5v8l-4-2.5" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" /></svg></div><div class="item-name">Customer Story Video</div></div></td>
+                  <td class="type-cell">Video</td>
+                  <td><div class="submitter">Riley Carter</div><div class="department">Demand Gen</div></td>
+                  <td><span class="status"><span class="status-dot"></span>Pending review</span></td>
+                  <td><span class="priority medium">Medium</span></td>
+                  <td class="date-cell">Jul 2</td>
+                  <td class="arrow-cell">→</td>
+                </tr>
+                <tr>
+                  <td><div class="item-cell"><div class="thumb" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M7 5h10v14H7V5z" stroke="currentColor" stroke-width="1.6" /><path d="M9.5 9h5M9.5 12h5M9.5 15h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /></svg></div><div class="item-name">Sales Playbook 2026</div></div></td>
+                  <td class="type-cell">PDF</td>
+                  <td><div class="submitter">Casey Nguyen</div><div class="department">Enablement</div></td>
+                  <td><span class="status"><span class="status-dot grey"></span>Draft</span></td>
+                  <td><span class="priority low">Low</span></td>
+                  <td class="date-cell">Jul 6</td>
+                  <td class="arrow-cell">→</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="queue-footer"><a href="#" class="view-link">View all approvals</a></div>
+        </section>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
