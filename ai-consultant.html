@@ -104,6 +104,7 @@ main{margin-left:var(--sidebar-width);width:100%;padding:44px;}
 
 <script>
 const SUPABASE_FUNCTION_URL = "https://ksvxslxwrfembxhmavqw.supabase.co/functions/v1/ai-consultant";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_RomL2BWgUhpweBERLtSJ6A_c2ev74Wu";
 
 const chatMessages = document.getElementById("chatMessages");
 const messageInput = document.getElementById("messageInput");
@@ -208,7 +209,11 @@ async function sendMessage() {
   try {
     const response = await fetch(SUPABASE_FUNCTION_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${SUPABASE_PUBLISHABLE_KEY}`,
+        "apikey": SUPABASE_PUBLISHABLE_KEY,
+      },
       body: JSON.stringify(payload),
     });
 
