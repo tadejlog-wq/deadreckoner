@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deadreckoner — Settings</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0a;--sidebar:#0d0d0d;--surface:#111111;--surface-2:#171717;--gold:#C9A84C;--gold-soft:rgba(201,168,76,.12);--white:#F5F5F5;--text:#888888;--border:rgba(255,255,255,.06);--green:#4EBA72;--radius:18px;--transition:.22s ease;--sidebar-width:220px;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{background:var(--bg);scroll-behavior:smooth;}
+body{background:radial-gradient(circle at top right,rgba(201,168,76,.07),transparent 35rem),var(--bg);color:var(--white);font-family:Inter,sans-serif;-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:inherit;}
+button{font:inherit;cursor:pointer;}
+.app{display:flex;min-height:100vh;}
+.sidebar{position:fixed;left:0;top:0;width:var(--sidebar-width);height:100vh;background:var(--sidebar);border-right:1px solid var(--border);padding:28px 18px;display:flex;flex-direction:column;}
+.brand{color:var(--gold);font-size:.75rem;font-weight:800;letter-spacing:4px;margin-bottom:38px;display:block;}
+.nav{display:flex;flex-direction:column;gap:5px;}
+.nav a{position:relative;display:flex;align-items:center;gap:12px;height:44px;padding:0 14px;border-radius:12px;color:var(--text);font-size:.9rem;font-weight:500;transition:var(--transition);}
+.nav a svg{width:17px;height:17px;flex-shrink:0;}
+.nav a::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:2px;border-radius:2px;background:transparent;}
+.nav a:hover{color:var(--white);background:rgba(255,255,255,.03);}
+.nav a.active{color:var(--white);background:var(--gold-soft);}
+.nav a.active::before{background:var(--gold);}
+.profile{margin-top:auto;border:1px solid var(--border);border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px;}
+.avatar{width:38px;height:38px;border-radius:50%;background:rgba(201,168,76,.14);border:1px solid rgba(201,168,76,.35);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:.75rem;font-weight:700;}
+.profile h4{font-size:.86rem;font-weight:600;}
+.profile span{display:block;color:var(--text);font-size:.74rem;margin-top:3px;}
+main{margin-left:var(--sidebar-width);width:100%;padding:44px;}
+.container{max-width:1200px;margin:auto;}
+.page-title{font-size:3.5rem;font-weight:300;letter-spacing:-2px;}
+.subtitle{margin-top:14px;color:var(--text);max-width:720px;line-height:1.7;}
+.card{margin-top:28px;background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:28px;transition:var(--transition);}
+.card:hover{border-color:rgba(201,168,76,.3);transform:translateY(-2px);}
+.card-title{margin-bottom:24px;font-size:1.05rem;font-weight:600;}
+.account{display:flex;justify-content:space-between;align-items:center;gap:24px;}
+.account-left{display:flex;align-items:center;gap:18px;}
+.account-avatar{width:72px;height:72px;border-radius:50%;background:#1a1a1a;border:1px solid rgba(255,255,255,.06);}
+.account-info h3{font-size:1.15rem;margin-bottom:6px;}
+.account-info p{color:var(--text);margin-top:3px;font-size:.9rem;}
+.ghost-btn{background:transparent;border:1px solid var(--gold);color:var(--gold);border-radius:999px;padding:12px 22px;transition:var(--transition);}
+.ghost-btn:hover{background:var(--gold-soft);}
+.member{display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-top:1px solid rgba(255,255,255,.05);}
+.member:first-of-type{border-top:none;}
+.member-left{display:flex;align-items:center;gap:14px;}
+.member-avatar{width:42px;height:42px;border-radius:50%;background:#1a1a1a;border:1px solid rgba(255,255,255,.05);}
+.badge{padding:6px 10px;border-radius:999px;font-size:.72rem;font-weight:700;background:rgba(201,168,76,.12);color:var(--gold);}
+.menu{color:var(--text);font-size:1.2rem;}
+.setting{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;padding:20px 0;border-top:1px solid rgba(255,255,255,.05);}
+.setting:first-of-type{border-top:none;}
+.setting h4{font-size:.96rem;margin-bottom:6px;}
+.setting p{color:var(--text);font-size:.86rem;line-height:1.6;}
+.toggle{width:54px;height:30px;background:#2a2a2a;border-radius:999px;position:relative;flex-shrink:0;}
+.toggle::after{content:"";width:22px;height:22px;border-radius:50%;background:var(--gold);position:absolute;top:4px;right:4px;}
+@media(max-width:900px){.app{display:block;}.sidebar{position:relative;width:100%;height:auto;}main{margin-left:0;padding:24px;}.account{flex-direction:column;align-items:flex-start;}.page-title{font-size:2.6rem;}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+<a href="index.html" class="brand">DEADRECKONER</a>
+<nav class="nav">
+<a href="dashboard.html"><svg viewBox="0 0 24 24" fill="none"><path d="M4 13h7V4H4v9zM13 20h7V4h-7v16zM4 20h7v-5H4v5z" stroke="currentColor" stroke-width="1.7"/></svg>Command Center</a>
+<a href="assets.html"><svg viewBox="0 0 24 24" fill="none"><path d="M4 7.5h7l2 2H20v9H4v-11z" stroke="currentColor" stroke-width="1.7"/></svg>Assets</a>
+<a href="approvals.html"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.2 4.2L19 6.8" stroke="currentColor" stroke-width="1.8"/></svg>Approvals</a>
+<a href="requests.html"><svg viewBox="0 0 24 24" fill="none"><path d="M6 5h12v14H6z" stroke="currentColor" stroke-width="1.7"/></svg>Requests</a>
+<a href="#"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.7"/></svg>AI Consultant</a>
+<a href="settings.html" class="active"><svg viewBox="0 0 24 24" fill="none"><path d="M12 8a4 4 0 100 8 4 4 0 000-8z" stroke="currentColor" stroke-width="1.7"/><path d="M19 12a7 7 0 01-.2 1.6l2 1.5-2 3.4-2.4-1a7.3 7.3 0 01-1.9 1.1L14 21h-4l-.5-2.4a7.3 7.3 0 01-1.9-1.1l-2.4 1-2-3.4 2-1.5A7 7 0 015 12c0-.5.1-1.1.2-1.6l-2-1.5 2-3.4 2.4 1A7.3 7.3 0 019.5 5L10 3h4l.5 2a7.3 7.3 0 011.9 1.1l2.4-1 2 3.4-2 1.5c.1.5.2 1.1.2 1.6z" stroke="currentColor" stroke-width="1.4"/></svg>Settings</a>
+</nav>
+<div class="profile">
+<div class="avatar">AM</div>
+<div><h4>Avery Morgan</h4><span>Brand Keeper</span></div>
+</div>
+</aside>
+<main>
+<div class="container">
+<h1 class="page-title">Settings</h1>
+<p class="subtitle">Manage your account, team, and brand governance preferences.</p>
+<section class="card">
+<h2 class="card-title">Account</h2>
+<div class="account">
+<div class="account-left">
+<div class="account-avatar"></div>
+<div class="account-info">
+<h3>Avery Morgan</h3>
+<p>avery@xibgroup.com</p>
+<p>Brand Keeper</p>
+</div>
+</div>
+<button class="ghost-btn">Edit Profile</button>
+</div>
+</section>
+<section class="card">
+<h2 class="card-title">Team &amp; Permissions</h2>
+<div class="member">
+<div class="member-left"><div class="member-avatar"></div><div>Avery Morgan</div></div>
+<div style="display:flex;align-items:center;gap:18px;"><span class="badge">Admin</span><span class="menu">•••</span></div>
+</div>
+<div class="member">
+<div class="member-left"><div class="member-avatar"></div><div>Ariana Costa</div></div>
+<div style="display:flex;align-items:center;gap:18px;"><span class="badge">Designer</span><span class="menu">•••</span></div>
+</div>
+<div class="member">
+<div class="member-left"><div class="member-avatar"></div><div>Marcus Chen</div></div>
+<div style="display:flex;align-items:center;gap:18px;"><span class="badge">Sales</span><span class="menu">•••</span></div>
+</div>
+<div class="member">
+<div class="member-left"><div class="member-avatar"></div><div>Lina Park</div></div>
+<div style="display:flex;align-items:center;gap:18px;"><span class="badge">Sales</span><span class="menu">•••</span></div>
+</div>
+</section>
+<section class="card">
+<h2 class="card-title">Brand Governance</h2>
+<div class="setting">
+<div><h4>Require approval for all uploads</h4><p>Every uploaded asset must be reviewed before entering the approved library.</p></div>
+<div class="toggle"></div>
+</div>
+<div class="setting">
+<div><h4>Auto-reject low resolution files</h4><p>Reject files that fail minimum quality and resolution requirements.</p></div>
+<div class="toggle"></div>
+</div>
+<div class="setting">
+<div><h4>Email notifications for pending reviews</h4><p>Notify reviewers whenever new assets or brand exceptions require approval.</p></div>
+<div class="toggle"></div>
+</div>
+</section>
+</div>
+</main>
+</div>
+</body>
+</html>
