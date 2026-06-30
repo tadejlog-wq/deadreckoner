@@ -288,6 +288,17 @@
 
     loadPendingApprovals();
     loadStats();
+
+    // ── Live sync via Supabase Realtime ────────────────────────────────
+    // If another tab approves/rejects a file, or the Python script syncs
+    // a new file, this re-fetches both the queue and the stats so this
+    // tab stays current automatically — no manual refresh needed.
+    sb.channel("approvals-live-sync")
+      .on("postgres_changes", { event: "*", schema: "public", table: "dump_assets" }, () => {
+        loadPendingApprovals();
+        loadStats();
+      })
+      .subscribe();
   </script>
 <!-- ═══ DEADRECKONER FLOATING AI CONSULTANT BUBBLE ═══ -->
 <style>

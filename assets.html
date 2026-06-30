@@ -162,6 +162,17 @@ td{padding:20px 22px;border-top:1px solid rgba(255,255,255,.04);font-size:.92rem
   }
 
   loadAssets();
+
+  // ── Live sync via Supabase Realtime ──────────────────────────────────
+  // Whenever any row in dump_assets changes (insert, update, or delete —
+  // for example, someone approving/rejecting on another tab, or a new
+  // file landing after the Python script runs), this re-fetches and
+  // re-renders the table automatically. No manual refresh needed.
+  sb.channel("assets-live-sync")
+    .on("postgres_changes", { event: "*", schema: "public", table: "dump_assets" }, () => {
+      loadAssets();
+    })
+    .subscribe();
 </script>
 
 <!-- ═══ DEADRECKONER FLOATING AI CONSULTANT BUBBLE ═══ -->

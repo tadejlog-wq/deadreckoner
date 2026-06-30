@@ -165,6 +165,15 @@ main{margin-left:var(--sidebar-width);width:100%;padding:44px;}
   }
 
   loadBrandMaturity();
+
+  // ── Live sync via Supabase Realtime ──────────────────────────────────
+  // Approving an asset on another tab immediately fills its ghost slot
+  // here too, without needing a manual refresh.
+  sb.channel("brand-maturity-live-sync")
+    .on("postgres_changes", { event: "*", schema: "public", table: "dump_assets" }, () => {
+      loadBrandMaturity();
+    })
+    .subscribe();
 </script>
 
 </body>
