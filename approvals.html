@@ -278,6 +278,11 @@
         document.getElementById("approval-tbody").innerHTML =
           `<tr><td colspan="6" style="text-align:center;color:var(--text-secondary);padding:32px;">No files awaiting review. Everything is caught up.</td></tr>`;
       }
+
+      // Refresh Approved/Rejected/Auto-Approved counts too — previously
+      // only "Pending Review" updated after a decision, leaving the other
+      // three stat cards stuck showing stale numbers until a full refresh.
+      loadStats();
     }
 
     async function loadStats() {
