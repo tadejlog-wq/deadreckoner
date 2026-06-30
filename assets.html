@@ -116,5 +116,52 @@ td{padding:20px 22px;border-top:1px solid rgba(255,255,255,.04);font-size:.92rem
 </div>
 </main>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = "https://ksvxslxwrfembxhmavqw.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_RomL2BWgUhpweBERLtSJ6A_c2ev74Wu";
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  async function loadAssets() {
+    const { data, error } = await supabase
+      .from('dump_assets')
+      .select('*')
+      .order('synced_at', { ascending: false })
+      .limit(10);
+
+    if (error) {
+      console.error('Supabase fetch error:', error);
+      return;
+    }
+
+    const tbody = document.querySelector('tbody');
+    if (!tbody) return;
+
+    tbody.innerHTML = '';
+
+    if (!data || data.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="5" style="color:#888;text-align:center;padding:32px;">No assets synced yet.</td></tr>';
+      return;
+    }
+
+    data.forEach(row => {
+      const statusDot = row.approval_status === 'approved' ? 'green' : 'gold';
+      const statusText = row.approval_status === 'approved' ? 'Approved' : 'Pending';
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${row.name || 'Untitled'}</td>
+        <td>${row.category || row.mime_type || '—'}</td>
+        <td class="user">${row.destination || '—'}<small>${row.is_workspace ? 'Workspace' : 'Personal'}</small></td>
+        <td>${row.synced_at ? new Date(row.synced_at).toLocaleDateString() : '—'}</td>
+        <td><span class="status"><span class="dot ${statusDot}"></span>${statusText}</span></td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  loadAssets();
+</script>
+
 </body>
 </html>
