@@ -229,7 +229,7 @@
         tr.innerHTML = `
           <td><div class="item-cell"><div class="thumb" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 6h14v12H5V6z" stroke="currentColor" stroke-width="1.6" /></svg></div><div class="item-name">${row.name || "Untitled"}</div></div></td>
           <td class="type-cell">${row.category || row.mime_type || "—"}</td>
-          <td>${row.ai_slot_name || "<span style=\\"color:var(--text-secondary);\\">No match</span>"}</td>
+          <td>${row.ai_slot_name || '<span style="color:var(--text-secondary);">No match</span>'}</td>
           <td>${confidenceBadge(row.ai_confidence, row.ai_confidence_pct)}</td>
           <td class="date-cell">${row.synced_at ? new Date(row.synced_at).toLocaleDateString() : "—"}</td>
           <td style="white-space:nowrap;display:flex;gap:8px;justify-content:flex-end;">
