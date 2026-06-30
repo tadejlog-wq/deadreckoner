@@ -42,11 +42,15 @@
     .page-subtitle { margin-top: 14px; color: var(--text-secondary); font-size: 1rem; font-weight: 400; line-height: 1.6; letter-spacing: -0.015em; }
     .header-mark { width: 42px; height: 42px; color: var(--gold); opacity: 0.82; flex: 0 0 auto; }
     .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 18px; }
-    .card { border: 1px solid var(--border); border-radius: var(--radius); background: linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.008)), var(--surface); transition: border-color var(--transition), background var(--transition), transform var(--transition); }
-    .card:hover { border-color: var(--gold-border); background: linear-gradient(180deg, rgba(201, 168, 76, 0.055), rgba(255, 255, 255, 0.012)), var(--surface-soft); transform: translateY(-2px); }
+    .card { border: 1px solid var(--border); border-radius: var(--radius); background: linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.008)), var(--surface); }
+    /* .card no longer has a hover lift effect — most cards on this page
+       (stat cards, Baseline Completion panel) are not clickable, so a
+       hover effect on them was misleading. The Recent Approvals rows
+       are the actual clickable elements and have their own hover state
+       (.approval-row:hover, defined below) instead. */
     .stat-card { position: relative; min-height: 164px; padding: 24px 24px 22px; overflow: hidden; }
     .stat-title { color: var(--text-secondary); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
-    .stat-value { margin-top: 24px; color: var(--text-primary); font-size: 2.55rem; font-weight: 500; letter-spacing: -0.06em; line-height: 1; }
+    .stat-value { margin-top: 24px; color: var(--text-primary); font-size: clamp(1.7rem, 4vw, 2.55rem); font-weight: 500; letter-spacing: -0.06em; line-height: 1; }
     .stat-label { margin-top: 10px; color: var(--gold); font-size: 0.86rem; font-weight: 600; letter-spacing: -0.01em; }
     .stat-progress { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: rgba(255, 255, 255, 0.045); }
     .stat-progress span { display: block; height: 100%; background: var(--gold); border-radius: 0 999px 999px 0; }

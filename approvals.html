@@ -42,11 +42,14 @@
     .page-subtitle { margin-top: 14px; color: var(--text-secondary); font-size: 1rem; font-weight: 400; line-height: 1.6; letter-spacing: -0.015em; }
     .header-mark { width: 42px; height: 42px; color: var(--gold); opacity: 0.82; flex: 0 0 auto; }
     .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 18px; }
-    .card { border: 1px solid var(--border); border-radius: var(--radius); background: linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.008)), var(--surface); transition: border-color var(--transition), background var(--transition), transform var(--transition); }
+    .card { border: 1px solid var(--border); border-radius: var(--radius); background: linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.008)), var(--surface); }
+    /* No hover lift on .card itself — the stat cards aren't clickable,
+       and the approval table rows already have their own correct hover
+       state (.approval-table tbody tr:hover, below). */
     .card:hover { border-color: var(--gold-border); background: linear-gradient(180deg, rgba(201, 168, 76, 0.055), rgba(255, 255, 255, 0.012)), var(--surface-soft); transform: translateY(-2px); }
     .stat-card { position: relative; min-height: 164px; padding: 24px 24px 22px; overflow: hidden; }
     .stat-title { color: var(--text-secondary); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
-    .stat-value { margin-top: 24px; color: var(--text-primary); font-size: 2.55rem; font-weight: 500; letter-spacing: -0.06em; line-height: 1; }
+    .stat-value { margin-top: 24px; color: var(--text-primary); font-size: clamp(1.7rem, 4vw, 2.55rem); font-weight: 500; letter-spacing: -0.06em; line-height: 1; }
     .stat-label { margin-top: 10px; color: var(--gold); font-size: 0.86rem; font-weight: 600; letter-spacing: -0.01em; }
     .stat-progress { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: rgba(255, 255, 255, 0.045); }
     .stat-progress span { display: block; height: 100%; background: var(--gold); border-radius: 0 999px 999px 0; }
@@ -58,7 +61,7 @@
     .filter-wrap::after { content: "⌄"; position: absolute; right: 14px; top: 50%; color: var(--text-secondary); font-size: 0.9rem; pointer-events: none; transform: translateY(-55%); }
     .filter-control:hover { border-color: var(--gold-border); color: var(--text-primary); background: var(--surface-soft); }
     .table-wrap { overflow-x: auto; padding-bottom: 2px; }
-    .approval-table { width: 100%; min-width: 920px; border-collapse: separate; border-spacing: 0 10px; }
+    .approval-table { width: 100%; min-width: 760px; border-collapse: separate; border-spacing: 0 10px; }
     .approval-table th { padding: 0 16px 8px; color: var(--text-muted); font-size: 0.72rem; font-weight: 800; letter-spacing: 0.12em; text-align: left; text-transform: uppercase; white-space: nowrap; }
     .approval-table th:last-child { width: 44px; padding-right: 12px; }
     .approval-table td { padding: 14px 16px; background: rgba(255, 255, 255, 0.022); border-top: 1px solid transparent; border-bottom: 1px solid transparent; vertical-align: middle; transition: border-color var(--transition), background var(--transition), transform var(--transition); }
@@ -69,7 +72,7 @@
     .item-cell { display: flex; align-items: center; gap: 14px; min-width: 260px; }
     .thumb { width: 46px; height: 46px; display: grid; place-items: center; flex: 0 0 auto; border: 1px solid var(--border-strong); border-radius: 12px; background: var(--surface-muted); color: var(--text-muted); }
     .thumb svg { width: 22px; height: 22px; }
-    .item-name { color: var(--text-primary); font-size: 0.92rem; font-weight: 650; letter-spacing: -0.02em; white-space: nowrap; }
+    .item-name { color: var(--text-primary); font-size: 0.92rem; font-weight: 650; letter-spacing: -0.02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 280px; }
     .type-cell, .date-cell { color: var(--text-secondary); font-size: 0.84rem; font-weight: 550; white-space: nowrap; }
     .submitter { color: var(--text-primary); font-size: 0.86rem; font-weight: 600; letter-spacing: -0.015em; white-space: nowrap; }
     .department { margin-top: 4px; color: var(--text-secondary); font-size: 0.76rem; font-weight: 500; white-space: nowrap; }
