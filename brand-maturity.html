@@ -72,25 +72,100 @@ main{margin-left:var(--sidebar-width);width:100%;padding:44px;}
 <h1 class="page-title">Brand Maturity</h1>
 <p class="subtitle">Track what's approved, and what's still missing from your brand book.</p>
 <section class="overall">
-<div class="percent">34%</div>
-<div class="progress"><span></span></div>
-<div class="progress-label">17 of 53 brand assets defined</div>
+<div class="percent" id="overallPercent">—</div>
+<div class="progress"><span id="overallBar" style="width:0%;"></span></div>
+<div class="progress-label" id="overallLabel">Loading brand maturity…</div>
 </section>
-<section class="grid">
-<div class="card"><h3>Logo &amp; Identity Marks</h3><p>3 of 7 complete</p><div class="slots"><div class="slot complete">✓</div><div class="slot complete">✓</div><div class="slot complete">✓</div><div class="slot missing">+</div><div class="slot missing">+</div><div class="slot missing">+</div><div class="slot missing">+</div></div></div>
-<div class="card"><h3>Color Palette</h3><p>2 of 4 complete</p><div class="slots"><div class="slot complete">✓</div><div class="slot complete">✓</div><div class="slot missing">+</div><div class="slot missing">+</div></div></div>
-<div class="card"><h3>Typography</h3><p>1 of 4 complete</p><div class="slots"><div class="slot complete">✓</div><div class="slot missing">+</div><div class="slot missing">+</div><div class="slot missing">+</div></div></div>
-<div class="card"><h3>Photography &amp; Imagery Style</h3><p>2 of 4 complete</p><div class="slots"><div class="slot complete">✓</div><div class="slot complete">✓</div><div class="slot missing">+</div><div class="slot missing">+</div></div></div>
-<div class="card"><h3>Web &amp; UI Assets</h3><p>1 of 11 complete</p><div class="slots"><div class="slot complete">✓</div><div class="slot missing">+</div><div class="slot missing">+</div><div class="slot missing">+</div><div class="slot missing">+</div><div class="slot missing">+</div><div class="slot missing">+</div><div class="slot missing">+</div><div class="slot missing">+</div><div class="slot missing">+</div><div class="slot missing">+</div></div></div>
-<div class="card"><h3>Email</h3><p>1 of 3 complete</p><div class="slots"><div class="slot complete">✓</div><div class="slot missing">+</div><div class="slot missing">+</div></div></div>
-<div class="card"><h3>Print &amp; Physical Collateral</h3><p>0 of 8 complete</p><div class="slots"><div class="slot missing">+</div><div class="slot missing">+</div><div class="slot missing">+</div><div class="slot missing">+</div><div class="slot missing">+</div><div class="slot missing">+</div><div class="slot missing">+</div><div class="slot missing">+</div></div></div>
-<div class="card"><h3>Marketing &amp; Sales Materials</h3><p>0 of 4 complete</p><div class="slots"><div class="slot missing">+</div><div class="slot missing">+</div><div class="slot missing">+</div><div class="slot missing">+</div></div></div>
-<div class="card"><h3>Video &amp; Motion</h3><p>0 of 3 complete</p><div class="slots"><div class="slot missing">+</div><div class="slot missing">+</div><div class="slot missing">+</div></div></div>
-<div class="card"><h3>Voice &amp; Messaging</h3><p>0 of 3 complete</p><div class="slots"><div class="slot missing">+</div><div class="slot missing">+</div><div class="slot missing">+</div></div></div>
-<div class="card"><h3>Legal &amp; Compliance</h3><p>0 of 2 complete</p><div class="slots"><div class="slot missing">+</div><div class="slot missing">+</div></div></div>
+<section class="grid" id="maturityGrid">
+<div class="card"><p style="color:var(--text);">Loading categories…</p></div>
 </section>
 </div>
 </main>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = "https://ksvxslxwrfembxhmavqw.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_RomL2BWgUhpweBERLtSJ6A_c2ev74Wu";
+  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  // Same 11-category, 53-slot taxonomy used by classifier.py and
+  // brand_slots.json — kept in sync manually since this page has no
+  // server-side rendering step. If the taxonomy changes, update both.
+  const TAXONOMY = [
+    { name: "Logo & Identity Marks", slots: ["logo_primary","logo_reversed","logo_icon","logo_mono","logo_horizontal","logo_stacked","logo_clearspace"] },
+    { name: "Color Palette", slots: ["color_primary","color_secondary","color_neutral","color_background"] },
+    { name: "Typography", slots: ["type_heading","type_body","type_web_fallback","type_print"] },
+    { name: "Photography & Imagery Style", slots: ["img_photography","img_icons","img_illustration","img_pattern"] },
+    { name: "Web & UI Assets", slots: ["ui_button_primary","ui_button_secondary","ui_button_ghost","ui_form_fields","ui_favicon","ui_web_banner","ui_social_linkedin","ui_social_instagram","ui_social_x","ui_social_facebook","ui_design_system"] },
+    { name: "Email", slots: ["email_signature","email_newsletter","email_transactional"] },
+    { name: "Print & Physical Collateral", slots: ["print_business_card","print_letterhead","print_envelope","print_ppt_title","print_ppt_content","print_ppt_closing","print_onepager","print_brochure"] },
+    { name: "Marketing & Sales Materials", slots: ["sales_investor_deck","sales_case_study","sales_playbook","sales_tradeshow_banner"] },
+    { name: "Video & Motion", slots: ["video_bumper","video_lower_third","video_motion_logo"] },
+    { name: "Voice & Messaging", slots: ["voice_tone_doc","voice_tagline","voice_mission"] },
+    { name: "Legal & Compliance", slots: ["legal_trademark","legal_usage_restrictions"] },
+  ];
+
+  function escapeHtml(str) {
+    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  async function loadBrandMaturity() {
+    const grid = document.getElementById("maturityGrid");
+
+    // Pull only the slot_id of every APPROVED asset — that's all we need
+    // to know which of the 53 slots are actually filled.
+    const { data, error } = await sb
+      .from("dump_assets")
+      .select("ai_slot_id")
+      .eq("approval_status", "approved");
+
+    if (error) {
+      console.error("Brand maturity fetch error:", error);
+      grid.innerHTML = `<div class="card"><p style="color:var(--text);">Could not load brand maturity data.</p></div>`;
+      return;
+    }
+
+    // A slot counts as "filled" if at least one approved asset was
+    // classified into it. Multiple approved assets in the same slot
+    // (e.g. two approved photography images) still only count that slot
+    // once — maturity tracks slot coverage, not asset volume.
+    const filledSlotIds = new Set((data || []).map(row => row.ai_slot_id).filter(Boolean));
+
+    let totalSlots = 0;
+    let totalFilled = 0;
+    const cardsHtml = [];
+
+    TAXONOMY.forEach(category => {
+      const slotCount = category.slots.length;
+      const filledCount = category.slots.filter(id => filledSlotIds.has(id)).length;
+      totalSlots += slotCount;
+      totalFilled += filledCount;
+
+      const squares = category.slots.map(id => {
+        const isFilled = filledSlotIds.has(id);
+        return `<div class="slot ${isFilled ? "complete" : "missing"}">${isFilled ? "✓" : "+"}</div>`;
+      }).join("");
+
+      cardsHtml.push(`
+        <div class="card">
+          <h3>${escapeHtml(category.name)}</h3>
+          <p>${filledCount} of ${slotCount} complete</p>
+          <div class="slots">${squares}</div>
+        </div>
+      `);
+    });
+
+    grid.innerHTML = cardsHtml.join("");
+
+    const overallPct = totalSlots > 0 ? Math.round((totalFilled / totalSlots) * 100) : 0;
+    document.getElementById("overallPercent").textContent = `${overallPct}%`;
+    document.getElementById("overallBar").style.width = `${overallPct}%`;
+    document.getElementById("overallLabel").textContent = `${totalFilled} of ${totalSlots} brand assets defined`;
+  }
+
+  loadBrandMaturity();
+</script>
+
 </body>
 </html>
