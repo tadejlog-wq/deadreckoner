@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deadreckoner — Requests</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+    --bg:#0a0a0a;--sidebar:#0d0d0d;--surface:#111111;--surface-2:#171717;
+    --gold:#C9A84C;--gold-soft:rgba(201,168,76,.12);--white:#F5F5F5;--text:#888888;
+    --border:rgba(255,255,255,.06);--green:#4EBA72;--blue:#4E9EBA;
+    --radius:18px;--transition:.22s ease;--sidebar-width:220px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{background:var(--bg);scroll-behavior:smooth;}
+body{background:radial-gradient(circle at top right,rgba(201,168,76,.07),transparent 35rem),var(--bg);color:var(--white);font-family:Inter,sans-serif;-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:inherit;}
+button{font:inherit;cursor:pointer;}
+.app{display:flex;min-height:100vh;}
+.sidebar{position:fixed;left:0;top:0;width:var(--sidebar-width);height:100vh;background:var(--sidebar);border-right:1px solid var(--border);padding:28px 18px;display:flex;flex-direction:column;}
+.brand{color:var(--gold);font-size:.75rem;font-weight:800;letter-spacing:4px;margin-bottom:38px;display:block;}
+.nav{display:flex;flex-direction:column;gap:5px;}
+.nav a{position:relative;display:flex;align-items:center;gap:12px;height:44px;padding:0 14px;color:var(--text);border-radius:12px;transition:var(--transition);font-size:.9rem;font-weight:500;}
+.nav a svg{width:17px;height:17px;flex-shrink:0;}
+.nav a::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:2px;background:transparent;border-radius:2px;}
+.nav a:hover{background:rgba(255,255,255,.03);color:var(--white);}
+.nav a.active{background:var(--gold-soft);color:var(--white);}
+.nav a.active::before{background:var(--gold);}
+.profile{margin-top:auto;border:1px solid var(--border);border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px;}
+.avatar{width:38px;height:38px;border-radius:50%;background:rgba(201,168,76,.14);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;border:1px solid rgba(201,168,76,.35);}
+.profile h4{font-size:.86rem;font-weight:600;}
+.profile span{display:block;color:var(--text);font-size:.74rem;margin-top:2px;}
+main{margin-left:var(--sidebar-width);width:100%;padding:44px;}
+.container{max-width:1280px;margin:auto;}
+.header{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;}
+.page-title{font-size:3.5rem;font-weight:300;letter-spacing:-2px;}
+.subtitle{margin-top:14px;color:var(--text);max-width:700px;line-height:1.7;}
+.primary-btn{background:var(--gold);color:#111;border:none;border-radius:999px;padding:14px 24px;font-weight:700;transition:var(--transition);}
+.primary-btn:hover{transform:translateY(-2px);filter:brightness(1.05);}
+.stats{margin-top:38px;display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;position:relative;transition:var(--transition);overflow:hidden;}
+.stat:hover{transform:translateY(-3px);border-color:rgba(201,168,76,.35);}
+.stat small{color:var(--text);text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;font-weight:700;}
+.stat h2{margin-top:22px;font-size:2.5rem;font-weight:500;letter-spacing:-2px;}
+.stat p{margin-top:8px;color:var(--gold);font-size:.86rem;font-weight:600;}
+.stat::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:3px;background:linear-gradient(90deg,var(--gold),rgba(201,168,76,.15));}
+.table-wrap{margin-top:42px;background:var(--surface);border:1px solid var(--border);border-radius:18px;overflow:hidden;}
+table{width:100%;border-collapse:collapse;}
+thead{background:#141414;}
+th{text-align:left;padding:18px 22px;color:#666;text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;font-weight:700;}
+tbody tr{transition:var(--transition);}
+tbody tr:hover{background:rgba(201,168,76,.05);}
+tbody tr:hover td:first-child{border-left:2px solid var(--gold);}
+td{padding:18px 22px;border-top:1px solid rgba(255,255,255,.04);vertical-align:middle;}
+.request-cell{display:flex;align-items:center;gap:14px;}
+.thumb{width:44px;height:44px;background:#1a1a1a;border:1px solid rgba(255,255,255,.05);border-radius:12px;flex-shrink:0;}
+.person{color:var(--white);}
+.person small{display:block;color:var(--text);margin-top:4px;}
+.status{display:inline-flex;align-items:center;gap:8px;}
+.dot{width:8px;height:8px;border-radius:50%;}
+.dot.gold{background:var(--gold);}
+.dot.blue{background:var(--blue);}
+.dot.green{background:var(--green);}
+.arrow{text-align:right;color:#666;transition:var(--transition);}
+tbody tr:hover .arrow{color:var(--gold);transform:translateX(3px);}
+@media(max-width:1200px){.stats{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:900px){.app{display:block;}.sidebar{position:relative;width:100%;height:auto;}main{margin-left:0;padding:24px;}.header{flex-direction:column;align-items:flex-start;}.stats{grid-template-columns:1fr;}.table-wrap{overflow:auto;}table{min-width:900px;}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+<a href="index.html" class="brand">DEADRECKONER</a>
+<nav class="nav">
+<a href="dashboard.html">
+<svg viewBox="0 0 24 24" fill="none"><path d="M4 13h7V4H4v9zM13 20h7V4h-7v16zM4 20h7v-5H4v5z" stroke="currentColor" stroke-width="1.7"/></svg>
+Command Center
+</a>
+<a href="assets.html">
+<svg viewBox="0 0 24 24" fill="none"><path d="M4 7.5h7l2 2H20v9H4v-11z" stroke="currentColor" stroke-width="1.7"/></svg>
+Assets
+</a>
+<a href="approvals.html">
+<svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.2 4.2L19 6.8" stroke="currentColor" stroke-width="1.8"/></svg>
+Approvals
+</a>
+<a href="requests.html" class="active">
+<svg viewBox="0 0 24 24" fill="none"><path d="M6 5h12v14H6z" stroke="currentColor" stroke-width="1.7"/></svg>
+Requests
+</a>
+<a href="#">
+<svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.7"/></svg>
+AI Consultant
+</a>
+<a href="#">
+<svg viewBox="0 0 24 24" fill="none"><path d="M12 8a4 4 0 100 8 4 4 0 000-8z" stroke="currentColor" stroke-width="1.7"/></svg>
+Settings
+</a>
+</nav>
+<div class="profile">
+<div class="avatar">AM</div>
+<div>
+<h4>Avery Morgan</h4>
+<span>Brand Keeper</span>
+</div>
+</div>
+</aside>
+<main>
+<div class="container">
+<div class="header">
+<div>
+<h1 class="page-title">Requests</h1>
+<p class="subtitle">Submit and track requests for new assets, exceptions, or custom work.</p>
+</div>
+<button class="primary-btn">New Request +</button>
+</div>
+<section class="stats">
+<div class="stat"><small>Open Requests</small><h2>9</h2><p>Awaiting action</p></div>
+<div class="stat"><small>In Progress</small><h2>5</h2><p>Being worked on</p></div>
+<div class="stat"><small>Completed</small><h2>47</h2><p>This month</p></div>
+<div class="stat"><small>Avg. Turnaround</small><h2>2.4 days</h2><p>Last 30 days</p></div>
+</section>
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>REQUEST</th><th>TYPE</th><th>REQUESTED BY</th><th>STATUS</th><th>DATE</th><th></th></tr>
+</thead>
+<tbody>
+<tr>
+<td><div class="request-cell"><div class="thumb"></div><div>Need logo variant for Japan market</div></div></td>
+<td>Custom Design</td>
+<td class="person">Kenji Watanabe<small>Sales</small></td>
+<td><span class="status"><span class="dot gold"></span>Open</span></td>
+<td>Jun 28</td>
+<td class="arrow">→</td>
+</tr>
+<tr>
+<td><div class="request-cell"><div class="thumb"></div><div>Email template — Q3 follow-up</div></div></td>
+<td>Template</td>
+<td class="person">Nia Roberts<small>Marketing</small></td>
+<td><span class="status"><span class="dot blue"></span>In progress</span></td>
+<td>Jun 26</td>
+<td class="arrow">→</td>
+</tr>
+<tr>
+<td><div class="request-cell"><div class="thumb"></div><div>Exception: client wants blue not gold</div></div></td>
+<td>Brand Exception</td>
+<td class="person">Marcus Chen<small>Corporate</small></td>
+<td><span class="status"><span class="dot gold"></span>Open</span></td>
+<td>Jun 25</td>
+<td class="arrow">→</td>
+</tr>
+<tr>
+<td><div class="request-cell"><div class="thumb"></div><div>New social media banner set</div></div></td>
+<td>Template</td>
+<td class="person">Lina Park<small>Marketing</small></td>
+<td><span class="status"><span class="dot green"></span>Completed</span></td>
+<td>Jun 20</td>
+<td class="arrow">→</td>
+</tr>
+<tr>
+<td><div class="request-cell"><div class="thumb"></div><div>Investor deck — custom layout</div></div></td>
+<td>Custom Design</td>
+<td class="person">Avery Morgan<small>Brand</small></td>
+<td><span class="status"><span class="dot blue"></span>In progress</span></td>
+<td>Jun 18</td>
+<td class="arrow">→</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</main>
+</div>
+</body>
+</html>
